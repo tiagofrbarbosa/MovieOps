@@ -56,8 +56,7 @@ public class Movie {
         this.backdrop = backdrop;
     }
 
-
-        public static class MovieResult{
+    public static class MovieResult{
             private List<Movie> results;
 
             public List<Movie> getResults(){
