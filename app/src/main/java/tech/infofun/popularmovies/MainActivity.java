@@ -1,8 +1,6 @@
 package tech.infofun.popularmovies;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,11 +36,9 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         List<Movie> movies = new ArrayList<>();
 
-        for(int i = 0; i < 25; i++ ){
+        for(int i = 0; i < 25; i++ ) {
             movies.add(new Movie());
         }
-
-        //mAdapter.setmMovieList(movies);
 
         RetroMovies();
 
@@ -86,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key","4ef00b7823d6ac0b6eb76eba2d0727fa");
+                        request.addEncodedQueryParam("api_key","API_KEY");
                     }
                 })
                 .setLogLevel(RestAdapter.LogLevel.FULL)
