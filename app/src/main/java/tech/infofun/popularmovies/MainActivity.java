@@ -15,6 +15,12 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit.Callback;
+import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private MoviesAdapter mAdapter;
@@ -36,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
             movies.add(new Movie());
         }
 
-        mAdapter.setmMovieList(movies);
+        //mAdapter.setmMovieList(movies);
+
+        RetroMovies();
 
     }
 
@@ -69,5 +77,33 @@ public class MainActivity extends AppCompatActivity {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
         }
+    }
+
+
+    public void RetroMovies(){
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint("http://api.themoviedb.org/3")
+                .setRequestInterceptor(new RequestInterceptor() {
+                    @Override
+                    public void intercept(RequestFacade request) {
+                        request.addEncodedQueryParam("api_key","4ef00b7823d6ac0b6eb76eba2d0727fa");
+                    }
+                })
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+
+        MoviesApiService service = restAdapter.create(MoviesApiService.class);
+        service.getPopularMOvies(new Callback<Movie.MovieResult>() {
+            @Override
+            public void success(Movie.MovieResult movieResult, Response response) {
+                mAdapter.setmMovieList(movieResult.getResults());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+            }
+        });
+
     }
 }
