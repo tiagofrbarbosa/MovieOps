@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,9 +23,14 @@ import retrofit.client.Response;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private MoviesAdapter mAdapter;
+    public int pageCount = 1;
+    public int nMovies = 0;
+    public boolean loading = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -34,16 +40,36 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
         mAdapter = new MoviesAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
-        List<Movie> movies = new ArrayList<>();
+
+        RetroMovies(pageCount);
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
 
 
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState){
+                super.onScrollStateChanged(recyclerView, newState);
+            }
 
-        for(int i = 0; i < 50; i++ ) {
-            movies.add(new Movie());
-        }
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
 
-        RetroMovies();
+               if(loading){
+                    if(dy > 0){
+                        int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
+                        int totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                        int pastVisiblesItems = ((GridLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
 
+                        if(pastVisiblesItems == nMovies){
+                            loading = false;
+
+                            Log.v("...", "Ultimo item");
+                            RetroMovies(pageCount);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -78,13 +104,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void RetroMovies(){
+    public void RetroMovies(final int nPages){
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3")
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
                         request.addEncodedQueryParam("api_key","API_KEY");
+                        request.addEncodedQueryParam("page",String.valueOf(nPages));
                     }
                 })
                 .setLogLevel(RestAdapter.LogLevel.FULL)
@@ -95,6 +122,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void success(Movie.MovieResult movieResult, Response response) {
                 mAdapter.setmMovieList(movieResult.getResults());
+                pageCount++;
+                nMovies += 16;
+                loading=true;
             }
 
             @Override
