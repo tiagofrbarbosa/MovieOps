@@ -47,7 +47,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MainActivity.MovieViewHo
         }
 
         public void setmMovieList(List<Movie> movieList){
-            //this.mMovieList.clear();
+            this.mMovieList.clear();
             this.mMovieList.addAll(movieList);
             notifyDataSetChanged();
         }
