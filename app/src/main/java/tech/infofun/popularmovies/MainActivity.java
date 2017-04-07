@@ -1,6 +1,7 @@
 package tech.infofun.popularmovies;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,9 +24,14 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
+
+
     private RecyclerView mRecyclerView;
     private MoviesAdapter mAdapter;
-    public int pageCount = 1;
+    private Parcelable mListState;
+    private int pageCount = 1;
+    static final String RESTORE_PAGE = "PageRestore";
+    static final String LIST_STATE_KEY = "ListRestore";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +47,22 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MoviesAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
-        RetroMovies(pageCount);
+        if(pageCount == 1) {
+            RetroMovies(pageCount);
+        }
 
         FloatingActionButton b_back = (FloatingActionButton) findViewById(R.id.back);
         b_back.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                pageCount--;
+
+                if(pageCount < 1){
+                    pageCount = 1;
+                }else {
+                    pageCount--;
+                }
+                Log.v("PageCount: ",String.valueOf(pageCount));
                 RetroMovies(pageCount);
             }
         });
@@ -62,6 +76,36 @@ public class MainActivity extends AppCompatActivity {
                 RetroMovies(pageCount);
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState){
+        mListState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+        savedInstanceState.putParcelable(LIST_STATE_KEY,mListState);
+        savedInstanceState.putInt(RESTORE_PAGE,pageCount);
+        super.onSaveInstanceState(savedInstanceState);
+        ;
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null) {
+            mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+            pageCount = savedInstanceState.getInt(RESTORE_PAGE);
+            RetroMovies(pageCount);
+        }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        if(mListState != null) {
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
+            RetroMovies(pageCount);
+        }
     }
 
     @Override
@@ -102,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key","API_KEY");
+                        request.addEncodedQueryParam("api_key","4ef00b7823d6ac0b6eb76eba2d0727fa");
                         request.addEncodedQueryParam("page",String.valueOf(nPages));
                     }
                 })
