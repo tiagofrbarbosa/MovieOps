@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(mListState != null) {
             mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
-            RetroMovies(pageCount);
         }
     }
 
@@ -146,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key","4ef00b7823d6ac0b6eb76eba2d0727fa");
+                        request.addEncodedQueryParam("api_key","API_KEY");
                         request.addEncodedQueryParam("page",String.valueOf(nPages));
                     }
                 })
