@@ -39,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(savedInstanceState == null) {
+            RetroMovies(pageCount);
+        }else{
+            RetroMovies(savedInstanceState.getInt(RESTORE_PAGE));
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -47,9 +53,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MoviesAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
-        if(pageCount == 1) {
-            RetroMovies(pageCount);
-        }
+
 
         FloatingActionButton b_back = (FloatingActionButton) findViewById(R.id.back);
         b_back.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState != null) {
             mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
             pageCount = savedInstanceState.getInt(RESTORE_PAGE);
-            RetroMovies(pageCount);
         }
     }
 
