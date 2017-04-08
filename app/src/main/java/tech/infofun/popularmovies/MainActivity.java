@@ -1,5 +1,7 @@
 package tech.infofun.popularmovies;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,13 +136,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static class MovieViewHolder extends RecyclerView.ViewHolder{
-        public ImageView imageView;
-        public MovieViewHolder(View itemView){
-            super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.imageView);
-        }
-    }
+
 
 
     public void RetroMovies(final int nPages){
@@ -148,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key","API_KEY");
+                        request.addEncodedQueryParam("api_key","4ef00b7823d6ac0b6eb76eba2d0727fa");
                         request.addEncodedQueryParam("page",String.valueOf(nPages));
                     }
                 })

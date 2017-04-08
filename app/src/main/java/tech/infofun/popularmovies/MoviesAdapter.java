@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by tfbarbosa on 04/04/2017.
  */
-public class MoviesAdapter extends RecyclerView.Adapter<MainActivity.MovieViewHolder>{
+public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder>{
         private List<Movie> mMovieList;
         private LayoutInflater mInflater;
         private Context mContext;
@@ -26,14 +26,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MainActivity.MovieViewHo
         }
 
         @Override
-        public MainActivity.MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
             View view = mInflater.inflate(R.layout.row_movie,parent,false);
-            MainActivity.MovieViewHolder viewHolder = new MainActivity.MovieViewHolder(view);
+            MovieViewHolder viewHolder = new MovieViewHolder(view);
             return viewHolder;
         }
 
         @Override
-        public void onBindViewHolder(MainActivity.MovieViewHolder holder,int position){
+        public void onBindViewHolder(MovieViewHolder holder,int position){
             Movie movie = mMovieList.get(position);
 
             Picasso.with(mContext)
