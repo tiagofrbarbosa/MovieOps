@@ -2,9 +2,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="tech.infofun.popularmovies.MainActivity">
+
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="3"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/popular_movies"
+        android:orderInCategory="1"
+        android:title="@string/populares"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/top_movies"
+        android:orderInCategory="2"
+        android:title="@string/top"
+        app:showAsAction="never"/>
+
 </menu>

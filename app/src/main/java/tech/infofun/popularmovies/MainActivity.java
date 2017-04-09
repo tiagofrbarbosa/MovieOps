@@ -2,8 +2,10 @@ package tech.infofun.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,8 +35,12 @@ public class MainActivity extends AppCompatActivity {
     private MoviesAdapter mAdapter;
     private Parcelable mListState;
     private int pageCount = 1;
+    private String query;
+    private String movieLang;
     static final String RESTORE_PAGE = "PageRestore";
     static final String LIST_STATE_KEY = "ListRestore";
+    static final String MOVIE_QUERY = "MovieQuery";
+    static final String LANG_MOVIE = "Language";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(savedInstanceState == null) {
-            RetroMovies(pageCount);
-        }else{
-            RetroMovies(savedInstanceState.getInt(RESTORE_PAGE));
-        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,7 +57,14 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MoviesAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
-
+        if(savedInstanceState == null) {
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+            query = sharedPrefs.getString(getString(R.string.pref_order_key),getString(R.string.pref_value_popular));
+            movieLang = sharedPrefs.getString(getString(R.string.pref_language_key),getString(R.string.pref_value_lang_en));
+            RetroMovies(pageCount,query);
+        }else{
+            RetroMovies(savedInstanceState.getInt(RESTORE_PAGE),savedInstanceState.getString(MOVIE_QUERY));
+        }
 
         FloatingActionButton b_back = (FloatingActionButton) findViewById(R.id.back);
         b_back.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     pageCount--;
                 }
                 Log.v("PageCount: ",String.valueOf(pageCount));
-                RetroMovies(pageCount);
+                RetroMovies(pageCount,query);
             }
         });
 
@@ -80,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 pageCount++;
-                RetroMovies(pageCount);
+                RetroMovies(pageCount,query);
             }
         });
     }
@@ -90,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         mListState = mRecyclerView.getLayoutManager().onSaveInstanceState();
         savedInstanceState.putParcelable(LIST_STATE_KEY,mListState);
         savedInstanceState.putInt(RESTORE_PAGE,pageCount);
+        savedInstanceState.putString(MOVIE_QUERY,query);;
         super.onSaveInstanceState(savedInstanceState);
         ;
 
@@ -98,19 +107,36 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
-        if(savedInstanceState != null) {
-            mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
-            pageCount = savedInstanceState.getInt(RESTORE_PAGE);
-        }
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String prefQuery = sharedPrefs.getString(getString(R.string.pref_order_key),getString(R.string.pref_value_popular));
+        String savedQuery = savedInstanceState.getString(MOVIE_QUERY);
+        String savedLang = savedInstanceState.getString(LANG_MOVIE);
+
+        //if(savedInstanceState != null) {
+
+            if (!savedQuery.equals(prefQuery)) {
+
+                query = prefQuery;
+                pageCount = 1;
+                RetroMovies(pageCount, query);
+
+            } else {
+
+                query = savedQuery;
+                mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+                pageCount = savedInstanceState.getInt(RESTORE_PAGE);
+                mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
+            }
+        //}
+
     }
 
     @Override
     protected void onResume(){
         super.onResume();
 
-        if(mListState != null) {
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
-        }
+
     }
 
     @Override
@@ -129,13 +155,24 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this,SettingsActivity.class);
+            startActivity(intent);
+        }
+
+        if(id == R.id.popular_movies){
+            this.query = "popular";
+            RetroMovies(pageCount,query);
+        }
+
+        if (id == R.id.top_movies){
+            this.query = "top";
+            RetroMovies(pageCount,query);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void RetroMovies(final int nPages){
+    public void RetroMovies(final int nPages, String query){
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3")
                 .setRequestInterceptor(new RequestInterceptor() {
@@ -143,23 +180,39 @@ public class MainActivity extends AppCompatActivity {
                     public void intercept(RequestFacade request) {
                         request.addEncodedQueryParam("api_key","API_KEY");
                         request.addEncodedQueryParam("page",String.valueOf(nPages));
+                        request.addEncodedQueryParam("language",String.valueOf(movieLang));
                     }
                 })
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
         MoviesApiService service = restAdapter.create(MoviesApiService.class);
-        service.getPopularMOvies(new Callback<Movie.MovieResult>() {
-            @Override
-            public void success(Movie.MovieResult movieResult, Response response) {
-                mAdapter.setmMovieList(movieResult.getResults());
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
-                error.printStackTrace();
-            }
-        });
+        if(query.equals("popular")) {
+            service.getPopularMOvies(new Callback<Movie.MovieResult>() {
+                @Override
+                public void success(Movie.MovieResult movieResult, Response response) {
+                    mAdapter.setmMovieList(movieResult.getResults());
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    error.printStackTrace();
+                }
+            });
+        }else if(query.equals("top")){
+            service.getTopMovies(new Callback<Movie.MovieResult>() {
+                @Override
+                public void success(Movie.MovieResult movieResult, Response response) {
+                    mAdapter.setmMovieList(movieResult.getResults());
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    error.printStackTrace();
+                }
+            });
+        }
 
     }
 }

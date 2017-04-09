@@ -9,4 +9,8 @@ import retrofit.http.GET;
 public interface MoviesApiService {
     @GET("/movie/popular")
     void getPopularMOvies(Callback<Movie.MovieResult> cb);
+
+    @GET("/movie/top_rated")
+    void getTopMovies(Callback<Movie.MovieResult> cb);
+
     }

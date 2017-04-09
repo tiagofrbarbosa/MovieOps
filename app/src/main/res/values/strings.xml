@@ -2,4 +2,22 @@
     <string name="app_name">PopularMovies</string>
     <string name="action_settings">Settings</string>
     <string name="Details">Details</string>
+    <string name="populares">Populares</string>
+    <string name="top">Melhores avaliados</string>
+    <string name="movies_order">Ordenar por:</string>
+    <string name="pref_order_key">movies_order</string>
+
+    <string name="pref_value_top">top</string>
+    <string name="pref_value_popular">popular</string>
+
+    <string name="pref_label_popular">Popular</string>
+    <string name="pref_label_top">Top</string>
+    <string name="Settings">Settings</string>
+    <string name="language">Linguagem:</string>
+    <string name="pref_language_key">language_key</string>
+
+    <string name="pref_label_lang_en">en-US</string>
+    <string name="pref_label_lang_pt">pt-BR</string>
+    <string name="pref_value_lang_en">en-US</string>
+    <string name="pref_value_lang_pt">pt-BR</string>
 </resources>
