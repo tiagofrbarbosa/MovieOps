@@ -11,6 +11,7 @@ public class Movie {
 
     static final String TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w500";
 
+    @SerializedName("original_title")
     private String title;
 
     @SerializedName("poster_path")
@@ -21,6 +22,10 @@ public class Movie {
 
     @SerializedName("backdrop_path")
     private String backdrop;
+
+    private String vote_average;
+
+    private String release_date;
 
     public Movie(){}
 
@@ -54,6 +59,22 @@ public class Movie {
 
     public void setBackdrop(String backdrop){
         this.backdrop = backdrop;
+    }
+
+    public String getVote_average(){
+        return vote_average;
+    }
+
+    public void setVote_average(String vote_average){
+        this.vote_average = vote_average;
+    }
+
+    public String getRelease_date(){
+        return release_date;
+    }
+
+    public void setRelease_date(String release_date){
+        this.release_date = release_date;
     }
 
     public static class MovieResult{
