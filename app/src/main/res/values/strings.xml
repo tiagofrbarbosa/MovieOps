@@ -22,4 +22,7 @@
     <string name="pref_value_lang_pt" translatable="false">pt-BR</string>
 
     <string name="query_movies_toast">Ordenar por: </string>
+    <string name="tmdb">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
+    <string name="about">About</string>
+
 </resources>
