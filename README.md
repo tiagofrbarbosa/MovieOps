@@ -14,11 +14,11 @@ Apresentar ao usuário uma grade com cartazes de filmes em lançamento.
 Permitir que o usuário altere a ordem de classificação via configuração:
 A ordem de classificação pode ser baseada na popularidade ou na avaliação do filme
 Permitir que o usuário toque no cartaz de um filme e passe para uma tela de detalhes com informações adicionais, como:
-título original
-miniatura da imagem do cartaz do filme
-uma sinopse da trama (chamada de visão geral na api)
-avaliação do usuário (chamada vote_average na api)
-data de lançamento
+- título original
+- miniatura da imagem do cartaz do filme
+- uma sinopse da trama (chamada de visão geral na api)
+- avaliação do usuário (chamada vote_average na api)
+- data de lançamento
 
 ## O que eu vou aprender depois do estágio 1?
 Você obterá dados na Internet com a API theMovieDB.
