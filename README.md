@@ -1,5 +1,10 @@
 # Udacity - Popular Movies - Estágio 1
 
+![alt text](https://raw.githubusercontent.com/tiagofrbarbosa/MovieOps/master/screenshots/cap01.png)
+![alt text](https://raw.githubusercontent.com/tiagofrbarbosa/MovieOps/master/screenshots/cap02.png)
+![alt text](https://raw.githubusercontent.com/tiagofrbarbosa/MovieOps/master/screenshots/cap03.png)
+![alt text](https://raw.githubusercontent.com/tiagofrbarbosa/MovieOps/master/screenshots/cap04.png)
+
 ## Visão geral do projeto
 Muitos de nós podem fazer uma associação com a ação de relaxar no colchão e curtir um filme com amigos e a família. Neste projeto, você desenvolverá um aplicativo que permite aos usuários encontrar os filmes mais populares que estão em exibição. Vamos dividir o desenvolvimento do aplicativo em dois estágios. Primeiro, vamos falar sobre o estágio 1. Nesse estágio, você criará a experiência central de seu aplicativo de filmes.
 
