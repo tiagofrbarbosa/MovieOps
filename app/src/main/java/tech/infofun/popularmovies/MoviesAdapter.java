@@ -20,9 +20,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder>{
         private Context mContext;
 
         public MoviesAdapter(Context context){
-            this.mContext = context;
-            this.mInflater = LayoutInflater.from(context);
-            this.mMovieList = new ArrayList<>();
+            mContext = context;
+            mInflater = LayoutInflater.from(context);
+            mMovieList = new ArrayList<>();
         }
 
         @Override
@@ -54,8 +54,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder>{
         }
 
         public void setmMovieList(List<Movie> movieList){
-            this.mMovieList.clear();
-            this.mMovieList.addAll(movieList);
+            mMovieList.clear();
+            mMovieList.addAll(movieList);
             notifyDataSetChanged();
         }
 }

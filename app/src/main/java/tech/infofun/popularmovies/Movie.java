@@ -41,40 +41,20 @@ public class Movie {
         return TMDB_IMAGE_PATH + poster;
     }
 
-    public void setPoster(String poster){
-        this.poster = poster;
-    }
-
     public String getDescription(){
         return description;
-    }
-
-    public void setDescription(String description){
-        this.description = description;
     }
 
     public String getBackdrop(){
         return TMDB_IMAGE_PATH + backdrop;
     }
 
-    public void setBackdrop(String backdrop){
-        this.backdrop = backdrop;
-    }
-
     public String getVote_average(){
         return vote_average;
     }
 
-    public void setVote_average(String vote_average){
-        this.vote_average = vote_average;
-    }
-
     public String getRelease_date(){
         return release_date;
-    }
-
-    public void setRelease_date(String release_date){
-        this.release_date = release_date;
     }
 
     public static class MovieResult{

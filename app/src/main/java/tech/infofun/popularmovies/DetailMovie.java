@@ -3,8 +3,6 @@ package tech.infofun.popularmovies;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -13,8 +11,6 @@ import com.squareup.picasso.Picasso;
  * Created by tfbarbosa on 08/04/17.
  */
 public class DetailMovie extends AppCompatActivity {
-    TextView mMovieTitle, mMovieDescription, mVoteAverage, mReleaseDate;
-    ImageView mImagePoster, mBackPoster;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
