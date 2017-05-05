@@ -26,7 +26,7 @@ Você usará adaptadores e layouts de lista personalizados para preencher listvi
 Você vai incorporar bibliotecas para simplificar a quantidade de código que é necessário escrever
 
 
-## THEMOVIESDB - APP KEY
+## THEMOVIESDB - API KEY
 
 Adicionar a api key do the movies db no metódo RetroMovies na MainActivity na linha 183
 
