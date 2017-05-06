@@ -6,23 +6,18 @@
     <string name="top">Melhores avaliados</string>
     <string name="movies_order">Ordenar por:</string>
     <string name="pref_order_key" translatable="false">movies_order</string>
-
     <string name="pref_value_top" translatable="false">top</string>
     <string name="pref_value_popular" translatable="false">popular</string>
-
     <string name="pref_label_popular" translatable="false">popular</string>
     <string name="pref_label_top" translatable="false">top</string>
     <string name="Settings">Settings</string>
     <string name="language">Linguagem:</string>
     <string name="pref_language_key" translatable="false">language_key</string>
-
     <string name="pref_label_lang_en" translatable="false">en-US</string>
     <string name="pref_label_lang_pt" translatable="false">pt-BR</string>
     <string name="pref_value_lang_en" translatable="false">en-US</string>
     <string name="pref_value_lang_pt" translatable="false">pt-BR</string>
-
     <string name="query_movies_toast">Ordenar por: </string>
     <string name="tmdb">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
     <string name="about">About</string>
-
 </resources>
