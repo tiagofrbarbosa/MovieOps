@@ -9,6 +9,9 @@ import java.util.List;
  */
 public class Trailer {
 
+    private static final String YOU_URL = "https://www.youtube.com/watch?v=";
+    private static final String YOU_APP = "vnd.youtube:";
+
     @SerializedName("key")
     private String key;
 
@@ -20,6 +23,14 @@ public class Trailer {
 
     public void setKey(String key){
         this.key = key;
+    }
+
+    public static String getYouUrl(){
+        return YOU_URL;
+    }
+
+    public static String getYouApp(){
+        return YOU_APP;
     }
 
     public static class TrailerResult{
