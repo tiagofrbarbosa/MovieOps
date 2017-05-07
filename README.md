@@ -28,11 +28,11 @@ Você vai incorporar bibliotecas para simplificar a quantidade de código que é
 
 ## THEMOVIESDB - API KEY
 
-Adicionar a api key do the movies db no metódo RetroMovies na MainActivity na linha 183
+Adicionar a api key do the movies db na contante API_KEY, na linha 37 da MainActivity
 
-Nesta linha: request.addEncodedQueryParam("api_key","APP_KEY");
+Nesta linha: private static final String API_KEY = "API_KEY_HERE";
 
-subistituir APP_KEY pela sua key
+subistituir API_KEY pela sua key
 
 ## Referências
 Este projeto teve como base o projeto desenvolvido por Jose Mateo:
