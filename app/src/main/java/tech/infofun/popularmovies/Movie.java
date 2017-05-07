@@ -9,7 +9,11 @@ import java.util.List;
  */
 public class Movie {
 
-    static final String TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w500";
+    private static final String TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w500";
+    private static final String TMDB_BACK_DROP_PATH = "http://image.tmdb.org/t/p/w1280";
+    private  static final String TMDB_ENDPOINT = "http://api.themoviedb.org/3";
+
+    //http://api.themoviedb.org/3/movie/293167/videos?api_key=4ef00b7823d6ac0b6eb76eba2d0727fa
 
     @SerializedName("original_title")
     private String title;
@@ -26,6 +30,8 @@ public class Movie {
     private String vote_average;
 
     private String release_date;
+
+    private int id;
 
     public Movie(){}
 
@@ -44,17 +50,49 @@ public class Movie {
     public String getDescription(){
         return description;
     }
+    
+    public void setDescription(String description){
+        this.description = description;
+    }
 
-    public String getBackdrop(){
-        return TMDB_IMAGE_PATH + backdrop;
+    public String getBackdrop() {
+        return backdrop;
     }
 
     public String getVote_average(){
         return vote_average;
     }
 
+    public void setVote_average(String vote_average) {
+        this.vote_average = vote_average;
+    }
+
     public String getRelease_date(){
         return release_date;
+    }
+
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setBackdrop(String backdrop) {
+        this.backdrop = backdrop;
+    }
+
+    public static String getTmdbBackDropPath(){
+        return TMDB_BACK_DROP_PATH;
+    }
+
+    public static String getTmdbEndpoint(){
+        return TMDB_ENDPOINT;
     }
 
     public static class MovieResult{

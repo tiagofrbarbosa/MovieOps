@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+
+    <TextView
+        android:id="@+id/text_trailer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Line1"/>
+
+</RelativeLayout>

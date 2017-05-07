@@ -1,6 +1,6 @@
 package tech.infofun.popularmovies;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -182,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void setPageCount(int p){
         this.pageCount = p;
-        Log.v("PageCount: ",String.valueOf(getPageCount()));
     }
 
     public void changePageCount(String op){
@@ -190,19 +188,21 @@ public class MainActivity extends AppCompatActivity {
 
         if(op.equals("add")){
             pageCount++;
-            Log.v("PageCount: ",String.valueOf(getPageCount()));
 
         }else if(op.equals("del")){
             pageCount--;
-            Log.v("PageCount: ",String.valueOf(getPageCount()));
 
         }
 
     }
 
+    public static String getApiKey(){
+        return API_KEY;
+    }
+
     public void RetroMovies(final int nPages, String query, final String movieLang){
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://api.themoviedb.org/3")
+                .setEndpoint(Movie.getTmdbEndpoint())
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {

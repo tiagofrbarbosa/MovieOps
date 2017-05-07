@@ -36,12 +36,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder>{
         public void onBindViewHolder(MovieViewHolder holder,int position){
             Movie movie = mMovieList.get(position);
 
-            holder.setTitle(movie.getTitle());
-            holder.setDescription(movie.getDescription());
-            holder.setVote_average(movie.getVote_average());
-            holder.setRelease_date(movie.getRelease_date());
-            holder.setPoster(movie.getPoster());
-            holder.setBackdrop(movie.getBackdrop());
+            holder.movieHolder.setTitle(movie.getTitle());
+            holder.movieHolder.setDescription(movie.getDescription());
+            holder.movieHolder.setVote_average(movie.getVote_average());
+            holder.movieHolder.setRelease_date(movie.getRelease_date());
+            holder.movieHolder.setBackdrop(movie.getBackdrop());
+            holder.movieHolder.setId(movie.getId());
 
             Picasso.with(mContext)
                     .load(movie.getPoster())
