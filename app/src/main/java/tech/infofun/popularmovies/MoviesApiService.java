@@ -16,4 +16,7 @@ public interface MoviesApiService {
     @GET("/videos")
     void getTrailers(Callback<Trailer.TrailerResult> cb);
 
+    @GET("/reviews")
+    void getReviews(Callback<Review.ReviewResult> cb);
+
     }

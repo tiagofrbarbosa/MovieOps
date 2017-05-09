@@ -88,6 +88,13 @@
 
             </android.support.v7.widget.RecyclerView>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/review_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/review_movie">
+
+            </android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
 

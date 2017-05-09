@@ -23,6 +23,9 @@ public class DetailMovie extends AppCompatActivity {
     TrailersAdapter mAdapter;
     RecyclerView mRecyclerView_trailer;
 
+    ReviewsAdapter reviewsAdapter;
+    RecyclerView getmRecyclerView_review;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -39,12 +42,17 @@ public class DetailMovie extends AppCompatActivity {
         mRecyclerView_trailer = (RecyclerView) findViewById(R.id.trailer_recycler);
         mRecyclerView_trailer.setLayoutManager(new LinearLayoutManager(this));
 
+        getmRecyclerView_review = (RecyclerView) findViewById(R.id.review_recycler);
+        getmRecyclerView_review.setLayoutManager(new LinearLayoutManager(this));
+
 
         mAdapter = new TrailersAdapter(this);
-        retroTrailers(mId);
         mRecyclerView_trailer.setAdapter(mAdapter);
-
         retroTrailers(mId);
+
+        reviewsAdapter = new ReviewsAdapter(this);
+        getmRecyclerView_review.setAdapter(reviewsAdapter);
+        retroReviews(mId);
 
         TextView mMovieTitle = (TextView) findViewById(R.id.movie_title);
         TextView mMovieDescription = (TextView) findViewById(R.id.movie_description);
@@ -84,6 +92,31 @@ public class DetailMovie extends AppCompatActivity {
             @Override
             public void success(Trailer.TrailerResult trailerResult, Response response) {
                 mAdapter.setmMovieList(trailerResult.getResults());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+            }
+        });
+    }
+
+    public void retroReviews(final int movieId){
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(Movie.getTmdbEndpoint() + "/movie/" + movieId)
+                .setRequestInterceptor(new RequestInterceptor() {
+                    @Override
+                    public void intercept(RequestFacade request) {
+                        request.addEncodedQueryParam("api_key",String.valueOf(MainActivity.getApiKey()));
+                    }
+                })
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+        MoviesApiService service = restAdapter.create(MoviesApiService.class);
+        service.getReviews(new Callback<Review.ReviewResult>() {
+            @Override
+            public void success(Review.ReviewResult reviewResult, Response response) {
+                reviewsAdapter.setmMovieList(reviewResult.getResults());
             }
 
             @Override
