@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,9 +43,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder>{
             holder.movieHolder.setRelease_date(movie.getRelease_date());
             holder.movieHolder.setBackdrop(movie.getBackdrop());
             holder.movieHolder.setId(movie.getId());
+            holder.movieHolder.setPoster(movie.getPoster());
 
             Picasso.with(mContext)
-                    .load(movie.getPoster())
+                    .load(Movie.getTmdbImagePath() + movie.getPoster())
                     .into(holder.imageView);
         }
 
@@ -55,6 +57,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder>{
 
         public void setmMovieList(List<Movie> movieList){
             mMovieList.clear();
+            mMovieList.removeAll(movieList);
             mMovieList.addAll(movieList);
             notifyDataSetChanged();
         }

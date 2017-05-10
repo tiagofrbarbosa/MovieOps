@@ -15,4 +15,10 @@
         android:title="@string/about"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/fav_movies_show"
+        android:orderInCategory="3"
+        android:title="@string/fav_movies"
+        app:showAsAction="never" />
+
 </menu>

@@ -20,4 +20,7 @@
     <string name="query_movies_toast">Ordenar por: </string>
     <string name="tmdb">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
     <string name="about">About</string>
+    <string name="success">Success</string>
+    <string name="error">Error</string>
+    <string name="fav_movies">My Favorites</string>
 </resources>

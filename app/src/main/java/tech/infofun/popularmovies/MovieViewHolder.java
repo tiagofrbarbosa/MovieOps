@@ -34,6 +34,7 @@ public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnC
         intent.putExtra("release_date",movieHolder.getRelease_date());
         intent.putExtra("backdrop",movieHolder.getBackdrop());
         intent.putExtra("id",movieHolder.getId());
+        intent.putExtra("poster",movieHolder.getPoster());
         context.startActivity(intent);
     }
 

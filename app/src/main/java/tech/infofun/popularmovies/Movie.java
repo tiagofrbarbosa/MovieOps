@@ -35,6 +35,11 @@ public class Movie {
 
     public Movie(){}
 
+    public Movie(int id, String title){
+        this.id = id;
+        this.title = title;
+    }
+
     public String getTitle(){
         return title;
     }
@@ -44,7 +49,11 @@ public class Movie {
     }
 
     public String getPoster(){
-        return TMDB_IMAGE_PATH + poster;
+        return poster;
+    }
+
+    public void setPoster(String poster){
+        this.poster = poster;
     }
 
     public String getDescription(){
@@ -93,6 +102,10 @@ public class Movie {
 
     public static String getTmdbEndpoint(){
         return TMDB_ENDPOINT;
+    }
+
+    public static String getTmdbImagePath(){
+        return TMDB_IMAGE_PATH;
     }
 
     public static class MovieResult{

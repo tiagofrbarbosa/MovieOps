@@ -3,6 +3,8 @@ package tech.infofun.popularmovies;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -11,10 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -24,6 +34,7 @@ import retrofit.client.Response;
 public class MainActivity extends AppCompatActivity {
 
 
+    private DatabaseHelper helper;
     private RecyclerView mRecyclerView;
     private MoviesAdapter mAdapter;
     private Parcelable mListState;
@@ -44,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -172,6 +185,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        if(id == R.id.fav_movies_show){
+
+            listFavMovies();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -242,5 +260,47 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+
+    private void listFavMovies(){
+
+        helper = new DatabaseHelper(this);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT _id, movie_id, title, poster FROM movies", null);
+        cursor.moveToFirst();
+
+        List<Movie> fav = new ArrayList<Movie>();
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+
+            Movie faMovies = new Movie();
+
+            faMovies.setId(cursor.getInt(1));
+            faMovies.setTitle(cursor.getString(2));
+            faMovies.setPoster(cursor.getString(3));
+
+            fav.add(faMovies);
+
+            Log.v("List",faMovies.getId() + faMovies.getTitle() + faMovies.getPoster());
+
+            cursor.moveToNext();
+
+        }
+        cursor.close();
+
+        mAdapter.setmMovieList(fav);
+    }
+
+    @Override
+    protected void onDestroy(){
+
+        try {
+            helper.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        super.onDestroy();
     }
 }
