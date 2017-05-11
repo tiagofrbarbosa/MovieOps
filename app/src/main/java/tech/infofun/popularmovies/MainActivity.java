@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String LANG_MOVIE = "movieLang";
     private static final String API_KEY = "API_KEY_HERE";
 
+    FloatingActionButton b_back, b_next;
+
 
 
     @Override
@@ -60,8 +62,12 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton b_back = (FloatingActionButton) findViewById(R.id.back);
-        FloatingActionButton b_next = (FloatingActionButton) findViewById(R.id.next);
+         b_back = (FloatingActionButton) findViewById(R.id.back);
+         b_next = (FloatingActionButton) findViewById(R.id.next);
+
+        if(getPageCount() == 1){
+            b_back.setVisibility(View.GONE);
+        }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
@@ -187,7 +193,28 @@ public class MainActivity extends AppCompatActivity {
 
         if(id == R.id.fav_movies_show){
 
+            b_back.setVisibility(View.GONE);
+            b_next.setVisibility(View.GONE);
             listFavMovies();
+
+        }
+
+        if(id == R.id.pop_movies_show){
+
+            b_back.setVisibility(View.VISIBLE);
+            b_next.setVisibility(View.VISIBLE);
+            query = "popular";
+            setPageCount(1);
+            RetroMovies(getPageCount(), query, movieLang);
+        }
+
+        if(id == R.id.top_movies_show){
+
+            b_back.setVisibility(View.VISIBLE);
+            b_next.setVisibility(View.VISIBLE);
+            query = "top";
+            setPageCount(1);
+            RetroMovies(getPageCount(), query, movieLang);
         }
 
         return super.onOptionsItemSelected(item);
@@ -199,10 +226,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void setPageCount(int p){
         this.pageCount = p;
+
+        if(pageCount > 1){
+            b_back.setVisibility(View.VISIBLE);
+        }else{
+            b_back.setVisibility(View.GONE);
+        }
     }
 
     public void changePageCount(String op){
-        FloatingActionButton b_back = (FloatingActionButton) findViewById(R.id.back);
+
 
         if(op.equals("add")){
             pageCount++;
@@ -210,6 +243,12 @@ public class MainActivity extends AppCompatActivity {
         }else if(op.equals("del")){
             pageCount--;
 
+        }
+
+        if(pageCount > 1){
+            b_back.setVisibility(View.VISIBLE);
+        }else{
+            b_back.setVisibility(View.GONE);
         }
 
     }
@@ -267,8 +306,9 @@ public class MainActivity extends AppCompatActivity {
 
         helper = new DatabaseHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT _id, movie_id, title, poster FROM movies", null);
+        Cursor cursor = db.rawQuery("SELECT _id, movie_id, title, poster, description, vote_average, release_date, backdrop FROM movies", null);
         cursor.moveToFirst();
+
 
         List<Movie> fav = new ArrayList<Movie>();
 
@@ -279,6 +319,12 @@ public class MainActivity extends AppCompatActivity {
             faMovies.setId(cursor.getInt(1));
             faMovies.setTitle(cursor.getString(2));
             faMovies.setPoster(cursor.getString(3));
+            faMovies.setDescription(cursor.getString(4));
+            faMovies.setVote_average(cursor.getString(5));
+            faMovies.setRelease_date(cursor.getString(6));
+            faMovies.setBackdrop(cursor.getString(7));
+
+            Log.v("BACKDROP", faMovies.getBackdrop());
 
             fav.add(faMovies);
 

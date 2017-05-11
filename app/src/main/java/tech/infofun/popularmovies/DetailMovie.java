@@ -1,11 +1,13 @@
 package tech.infofun.popularmovies;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -25,11 +27,15 @@ import retrofit.client.Response;
 public class DetailMovie extends AppCompatActivity {
 
     private DatabaseHelper helper;
+    private SQLiteDatabase db;
     TrailersAdapter mAdapter;
     RecyclerView mRecyclerView_trailer;
 
     ReviewsAdapter reviewsAdapter;
     RecyclerView getmRecyclerView_review;
+
+    CheckBox mfavCheck;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -38,12 +44,13 @@ public class DetailMovie extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         final String mTitle = extras.getString("title");
-        String mDescription = extras.getString("description");
-        String mVote = extras.getString("vote_average");
-        String mRelease = extras.getString("release_date");
-        String mBack = Movie.getTmdbBackDropPath() + extras.getString("backdrop");
+        final String mDescription = extras.getString("description");
+        final String mVote = extras.getString("vote_average");
+        final String mRelease = extras.getString("release_date");
+        final String mBack = extras.getString("backdrop");
         final String mPoster = extras.getString("poster");
         final int mId = extras.getInt("id");
+
 
         mRecyclerView_trailer = (RecyclerView) findViewById(R.id.trailer_recycler);
         mRecyclerView_trailer.setLayoutManager(new LinearLayoutManager(this));
@@ -62,28 +69,50 @@ public class DetailMovie extends AppCompatActivity {
 
         TextView mMovieTitle = (TextView) findViewById(R.id.movie_title);
         TextView mMovieDescription = (TextView) findViewById(R.id.movie_description);
-        TextView mVoteAverage = (TextView) findViewById(R.id.vote_average);
+        final TextView mVoteAverage = (TextView) findViewById(R.id.vote_average);
         TextView mReleaseDate = (TextView) findViewById(R.id.release_date);
         ImageView mBackPoster = (ImageView) findViewById(R.id.back_detail);
-        final CheckBox mfavCheck = (CheckBox) findViewById(R.id.fav_check);
+        mfavCheck = (CheckBox) findViewById(R.id.fav_check);
+
+        helper = new DatabaseHelper(this);
+        db = helper.getReadableDatabase();
+
+        String query = "SELECT movie_id FROM movies WHERE movie_id = " + mId;
+        Cursor cursor = db.rawQuery(query,null);
+        cursor.moveToFirst();
+
+        int movie_count = cursor.getCount();
+
+        if(movie_count > 0){
+            mfavCheck.setChecked(true);
+        }
 
         mfavCheck.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                mfavCheck.isChecked();
 
-                SQLiteDatabase db = helper.getWritableDatabase();
+                db = helper.getWritableDatabase();
 
-                ContentValues values = new ContentValues();
-                values.put("movie_id", mId);
-                values.put("Title", mTitle);
-                values.put("poster", mPoster);
+                if(mfavCheck.isChecked()) {
+                    ContentValues values = new ContentValues();
+                    values.put("movie_id", mId);
+                    values.put("Title", mTitle);
+                    values.put("poster", mPoster);
+                    values.put("description", mDescription);
+                    values.put("vote_average", mVote);
+                    values.put("release_date", mRelease);
+                    values.put("backdrop", mBack);
 
-                long insert_result = db.insert("movies", null, values);
+                    long insert_result = db.insert("movies", null, values);
 
-                if(insert_result != -1){
-                    Toast.makeText(DetailMovie.this, getString(R.string.success), Toast.LENGTH_LONG).show();
+                    if (insert_result != -1) {
+                        Toast.makeText(DetailMovie.this, getString(R.string.success), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(DetailMovie.this, getString(R.string.error), Toast.LENGTH_LONG).show();
+                    }
                 }else{
-                    Toast.makeText(DetailMovie.this, getString(R.string.error), Toast.LENGTH_LONG).show();
+                    String where[] = new String[]{String.valueOf(mId)};
+                    db.delete("movies","movie_id = ?",where);
+                    Toast.makeText(DetailMovie.this, getString(R.string.removed), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -95,11 +124,8 @@ public class DetailMovie extends AppCompatActivity {
         mReleaseDate.setText(mRelease);
 
         Picasso.with(this)
-                .load(mBack)
+                .load(Movie.getTmdbBackDropPath() + mBack)
                 .into(mBackPoster);
-
-        helper = new DatabaseHelper(this);
-
     }
 
 

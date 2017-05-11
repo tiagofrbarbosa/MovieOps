@@ -23,4 +23,6 @@
     <string name="success">Success</string>
     <string name="error">Error</string>
     <string name="fav_movies">My Favorites</string>
+    <string name="removed">Removido dos favoritos!</string>
+    <string name="popmovies">Popular</string>
 </resources>

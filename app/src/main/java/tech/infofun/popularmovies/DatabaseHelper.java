@@ -23,7 +23,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE movies(_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                    "movie_id INTEGER," +
                     "title TEXT," +
-                    "poster TEXT);");
+                    "poster TEXT," +
+                    "description TEXT," +
+                    "vote_average TEXT," +
+                    "release_date TEXT," +
+                    "backdrop TEXT);");
     }
 
     @Override

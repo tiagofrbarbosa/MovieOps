@@ -21,4 +21,16 @@
         android:title="@string/fav_movies"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/pop_movies_show"
+        android:orderInCategory="4"
+        android:title="@string/popmovies"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/top_movies_show"
+        android:orderInCategory="5"
+        android:title="@string/top"
+        app:showAsAction="never" />
+
 </menu>
