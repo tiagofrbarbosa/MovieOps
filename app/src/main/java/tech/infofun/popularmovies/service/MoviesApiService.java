@@ -1,7 +1,10 @@
-package tech.infofun.popularmovies;
+package tech.infofun.popularmovies.service;
 
 import retrofit.Callback;
 import retrofit.http.GET;
+import tech.infofun.popularmovies.model.Movie;
+import tech.infofun.popularmovies.model.Review;
+import tech.infofun.popularmovies.model.Trailer;
 
 /**
  * Created by tfbarbosa on 04/04/17.

@@ -1,4 +1,4 @@
-package tech.infofun.popularmovies;
+package tech.infofun.popularmovies.model;
 
 import com.google.gson.annotations.SerializedName;
 

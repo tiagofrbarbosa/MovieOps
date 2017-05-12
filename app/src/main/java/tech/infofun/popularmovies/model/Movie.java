@@ -1,4 +1,4 @@
-package tech.infofun.popularmovies;
+package tech.infofun.popularmovies.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -38,6 +38,18 @@ public class Movie {
     public Movie(int id, String title){
         this.id = id;
         this.title = title;
+    }
+
+    public Movie(int id, String title, String poster, String description,
+                 String vote_average, String release_date, String backdrop){
+
+        this.id = id;
+        this.title = title;
+        this.poster = poster;
+        this.description = description;
+        this.vote_average = vote_average;
+        this.release_date = release_date;
+        this.backdrop = backdrop;
     }
 
     public String getTitle(){

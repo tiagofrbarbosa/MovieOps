@@ -2,27 +2,27 @@
     <string name="app_name">PopularMovies</string>
     <string name="action_settings">Settings</string>
     <string name="Details">Details</string>
-    <string name="populares">Populares</string>
-    <string name="top">Melhores avaliados</string>
-    <string name="movies_order">Ordenar por:</string>
-    <string name="pref_order_key" translatable="false">movies_order</string>
+    <string name="populares">Popular</string>
+    <string name="top">Top Rated</string>
+    <string name="movies_order">Order by:</string>
+    <string name="pref_order_key" translatable="false">Movies_order</string>
     <string name="pref_value_top" translatable="false">top</string>
     <string name="pref_value_popular" translatable="false">popular</string>
     <string name="pref_label_popular" translatable="false">popular</string>
     <string name="pref_label_top" translatable="false">top</string>
     <string name="Settings">Settings</string>
-    <string name="language">Linguagem:</string>
+    <string name="language">Language:</string>
     <string name="pref_language_key" translatable="false">language_key</string>
     <string name="pref_label_lang_en" translatable="false">en-US</string>
     <string name="pref_label_lang_pt" translatable="false">pt-BR</string>
     <string name="pref_value_lang_en" translatable="false">en-US</string>
     <string name="pref_value_lang_pt" translatable="false">pt-BR</string>
-    <string name="query_movies_toast">Ordenar por: </string>
+    <string name="query_movies_toast">Order by: </string>
     <string name="tmdb">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
     <string name="about">About</string>
-    <string name="success">Success</string>
-    <string name="error">Error</string>
+    <string name="success">Added to favorites!</string>
+    <string name="error">Error writing!</string>
     <string name="fav_movies">My Favorites</string>
-    <string name="removed">Removido dos favoritos!</string>
+    <string name="removed">Removed from favorites!</string>
     <string name="popmovies">Popular</string>
 </resources>

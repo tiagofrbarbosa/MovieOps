@@ -1,10 +1,12 @@
-package tech.infofun.popularmovies;
+package tech.infofun.popularmovies.activity;
 
         import android.os.Bundle;
         import android.preference.ListPreference;
         import android.preference.Preference;
         import android.preference.PreferenceActivity;
         import android.preference.PreferenceManager;
+
+        import tech.infofun.popularmovies.R;
 
 /**
  * Created by tfbarbosa on 09/04/17.

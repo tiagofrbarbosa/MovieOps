@@ -1,10 +1,8 @@
-package tech.infofun.popularmovies;
+package tech.infofun.popularmovies.activity;
 
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -13,30 +11,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import retrofit.Callback;
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import tech.infofun.popularmovies.database.MoviesDAO;
+import tech.infofun.popularmovies.R;
+import tech.infofun.popularmovies.adapter.MoviesAdapter;
+import tech.infofun.popularmovies.model.Movie;
+import tech.infofun.popularmovies.service.MoviesRetrofit;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    private DatabaseHelper helper;
+    private MoviesDAO mMoviesDAO;
     private RecyclerView mRecyclerView;
-    private MoviesAdapter mAdapter;
+    public static MoviesAdapter mAdapter;
     private Parcelable mListState;
     private int pageCount = 1;
     private String query;
@@ -46,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String MOVIE_QUERY = "MovieQuery";
     private static final String LANG_MOVIE = "movieLang";
     private static final String API_KEY = "API_KEY_HERE";
-
+    private MoviesRetrofit mMoviesRetro;
     FloatingActionButton b_back, b_next;
 
 
@@ -58,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
          b_back = (FloatingActionButton) findViewById(R.id.back);
@@ -69,18 +57,21 @@ public class MainActivity extends AppCompatActivity {
             b_back.setVisibility(View.GONE);
         }
 
+
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
         mAdapter = new MoviesAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
+        mMoviesRetro = new MoviesRetrofit();
+
 
         if(savedInstanceState == null) {
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
             query = sharedPrefs.getString(getString(R.string.pref_order_key),getString(R.string.pref_value_popular));
             movieLang = sharedPrefs.getString(getString(R.string.pref_language_key),getString(R.string.pref_value_lang_en));
-            RetroMovies(getPageCount(),query, movieLang);
+            mMoviesRetro.retroMovies(getPageCount(),query, movieLang);
         }else{
-            RetroMovies(savedInstanceState.getInt(RESTORE_PAGE),savedInstanceState.getString(MOVIE_QUERY), savedInstanceState.getString(LANG_MOVIE));
+            mMoviesRetro.retroMovies(savedInstanceState.getInt(RESTORE_PAGE),savedInstanceState.getString(MOVIE_QUERY), savedInstanceState.getString(LANG_MOVIE));
         }
 
             b_back.setOnClickListener(new View.OnClickListener() {
@@ -89,10 +80,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
                     if (getPageCount() > 1) {
-                        changePageCount("del");
+                        changePageCount(false);
                     }
 
-                    RetroMovies(getPageCount(), query, movieLang);
+                    mMoviesRetro.retroMovies(getPageCount(), query, movieLang);
                 }
             });
 
@@ -101,9 +92,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                changePageCount("add");
+                changePageCount(true);
 
-                RetroMovies(getPageCount(),query,movieLang);
+                mMoviesRetro.retroMovies(getPageCount(),query,movieLang);
             }
         });
     }
@@ -135,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 query = prefQuery;
                 movieLang = prefLang;
                 setPageCount(1);
-                RetroMovies(getPageCount(), query, movieLang);
+                mMoviesRetro.retroMovies(getPageCount(), query, movieLang);
 
             } else {
 
@@ -158,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
             query = prefQuery;
             movieLang = prefLang;
             setPageCount(1);
-            RetroMovies(getPageCount(), query, movieLang);
+            mMoviesRetro.retroMovies(getPageCount(), query, movieLang);
             String msgToast = getResources().getString(R.string.query_movies_toast);
             Toast toast = Toast.makeText(this, msgToast + " " + query, Toast.LENGTH_SHORT);
             toast.show();
@@ -195,8 +186,9 @@ public class MainActivity extends AppCompatActivity {
 
             b_back.setVisibility(View.GONE);
             b_next.setVisibility(View.GONE);
-            listFavMovies();
-
+            mMoviesDAO = new MoviesDAO(this);
+            List<Movie> fav = mMoviesDAO.select_all();
+            mAdapter.setmMovieList(fav);
         }
 
         if(id == R.id.pop_movies_show){
@@ -205,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
             b_next.setVisibility(View.VISIBLE);
             query = "popular";
             setPageCount(1);
-            RetroMovies(getPageCount(), query, movieLang);
+            mMoviesRetro.retroMovies(getPageCount(), query, movieLang);
         }
 
         if(id == R.id.top_movies_show){
@@ -214,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
             b_next.setVisibility(View.VISIBLE);
             query = "top";
             setPageCount(1);
-            RetroMovies(getPageCount(), query, movieLang);
+            mMoviesRetro.retroMovies(getPageCount(), query, movieLang);
         }
 
         return super.onOptionsItemSelected(item);
@@ -234,15 +226,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void changePageCount(String op){
+    public void changePageCount(boolean operation){
 
-
-        if(op.equals("add")){
+        if(operation){
             pageCount++;
-
-        }else if(op.equals("del")){
+        }else{
             pageCount--;
-
         }
 
         if(pageCount > 1){
@@ -257,92 +246,11 @@ public class MainActivity extends AppCompatActivity {
         return API_KEY;
     }
 
-    public void RetroMovies(final int nPages, String query, final String movieLang){
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(Movie.getTmdbEndpoint())
-                .setRequestInterceptor(new RequestInterceptor() {
-                    @Override
-                    public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key",String.valueOf(API_KEY));
-                        request.addEncodedQueryParam("page",String.valueOf(nPages));
-                        request.addEncodedQueryParam("language",String.valueOf(movieLang));
-                    }
-                })
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .build();
-
-        MoviesApiService service = restAdapter.create(MoviesApiService.class);
-
-        if(query.equals("popular")) {
-            service.getPopularMOvies(new Callback<Movie.MovieResult>() {
-                @Override
-                public void success(Movie.MovieResult movieResult, Response response) {
-                    mAdapter.setmMovieList(movieResult.getResults());
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    error.printStackTrace();
-                }
-            });
-        }else if(query.equals("top")){
-            service.getTopMovies(new Callback<Movie.MovieResult>() {
-                @Override
-                public void success(Movie.MovieResult movieResult, Response response) {
-                    mAdapter.setmMovieList(movieResult.getResults());
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    error.printStackTrace();
-                }
-            });
-        }
-
-    }
-
-
-    private void listFavMovies(){
-
-        helper = new DatabaseHelper(this);
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT _id, movie_id, title, poster, description, vote_average, release_date, backdrop FROM movies", null);
-        cursor.moveToFirst();
-
-
-        List<Movie> fav = new ArrayList<Movie>();
-
-        for (int i = 0; i < cursor.getCount(); i++) {
-
-            Movie faMovies = new Movie();
-
-            faMovies.setId(cursor.getInt(1));
-            faMovies.setTitle(cursor.getString(2));
-            faMovies.setPoster(cursor.getString(3));
-            faMovies.setDescription(cursor.getString(4));
-            faMovies.setVote_average(cursor.getString(5));
-            faMovies.setRelease_date(cursor.getString(6));
-            faMovies.setBackdrop(cursor.getString(7));
-
-            Log.v("BACKDROP", faMovies.getBackdrop());
-
-            fav.add(faMovies);
-
-            Log.v("List",faMovies.getId() + faMovies.getTitle() + faMovies.getPoster());
-
-            cursor.moveToNext();
-
-        }
-        cursor.close();
-
-        mAdapter.setmMovieList(fav);
-    }
-
     @Override
     protected void onDestroy(){
 
         try {
-            helper.close();
+            mMoviesDAO.close();
         }catch (Exception e){
             e.printStackTrace();
         }

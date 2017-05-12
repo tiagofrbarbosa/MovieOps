@@ -1,4 +1,4 @@
-package tech.infofun.popularmovies;
+package tech.infofun.popularmovies.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +9,11 @@ import android.view.ViewGroup;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import tech.infofun.popularmovies.model.Movie;
+import tech.infofun.popularmovies.R;
+import tech.infofun.popularmovies.holder.MovieViewHolder;
 
 /**
  * Created by tfbarbosa on 04/04/2017.
