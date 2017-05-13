@@ -9,6 +9,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import tech.infofun.popularmovies.activity.FavoriteActivity;
+import tech.infofun.popularmovies.activity.MainActivity;
 import tech.infofun.popularmovies.model.Movie;
 
 /**
@@ -33,7 +35,7 @@ public class MoviesDAO {
     public long insert(Movie movie){
    ;
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.MoviesTable._ID, movie.getId());
+        values.put(DatabaseHelper.MoviesTable.MOVIE_ID, movie.getId());
         values.put(DatabaseHelper.MoviesTable.TITLE, movie.getTitle());
         values.put(DatabaseHelper.MoviesTable.POSTER, movie.getPoster());
         values.put(DatabaseHelper.MoviesTable.DESCRIPTION, movie.getDescription());
@@ -44,22 +46,31 @@ public class MoviesDAO {
         return getDb().insert(DatabaseHelper.MoviesTable.TABLE,null,values);
     }
 
-    public boolean delete(int id){
+    public void delete(int id){
         String p_args = String.valueOf(id);
         String where = DatabaseHelper.MoviesTable.MOVIE_ID + " = ?";
         String[] args = new String[]{p_args};
-        int result = getDb().delete(DatabaseHelper.MoviesTable.TABLE, where, args);
-        return result > 0;
+        getDb().delete(DatabaseHelper.MoviesTable.TABLE, where, args);
+        List<Movie> fav = select_all();
+        FavoriteActivity.mAdapter.setmMovieList(fav);
     }
 
     public int select_check(int id){
         String p_args = String.valueOf(id);
         String where = DatabaseHelper.MoviesTable.MOVIE_ID + " = ";
-        String query = "SELECT " + DatabaseHelper.MoviesTable.MOVIE_ID + " FROM " + DatabaseHelper.MoviesTable.TABLE + " WHERE " + where + p_args;
-        Log.v("sql_result", query);
-        Cursor cursor  = getDb().rawQuery(query,null);
-        Log.v("sql_result",String.valueOf(cursor.getCount()));
-        return cursor.getCount();
+
+        String query = "SELECT " +  DatabaseHelper.MoviesTable.MOVIE_ID +
+                " FROM " + DatabaseHelper.MoviesTable.TABLE +
+                " WHERE " + where + p_args;
+
+        Cursor cursor = getDb().rawQuery(query,null);
+        cursor.moveToFirst();
+
+        try {
+            return cursor.getCount();
+        }catch (Exception e){
+            return 0;
+        }
     }
 
     public List<Movie> select_all(){
@@ -99,11 +110,6 @@ public class MoviesDAO {
 
 
     public void close(){
-        try {
-            helper.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
+        helper.close();
     }
 }

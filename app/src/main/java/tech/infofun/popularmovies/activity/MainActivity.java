@@ -15,11 +15,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import java.util.List;
 import tech.infofun.popularmovies.database.MoviesDAO;
 import tech.infofun.popularmovies.R;
 import tech.infofun.popularmovies.adapter.MoviesAdapter;
-import tech.infofun.popularmovies.model.Movie;
 import tech.infofun.popularmovies.service.MoviesRetrofit;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String LANG_MOVIE = "movieLang";
     private static final String API_KEY = "API_KEY_HERE";
     private MoviesRetrofit mMoviesRetro;
-    FloatingActionButton b_back, b_next;
+    private  FloatingActionButton b_back, b_next;
 
 
 
@@ -67,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
         if(savedInstanceState == null) {
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-            query = sharedPrefs.getString(getString(R.string.pref_order_key),getString(R.string.pref_value_popular));
+            setQuery(sharedPrefs.getString(getString(R.string.pref_order_key),getString(R.string.pref_value_popular)));
             movieLang = sharedPrefs.getString(getString(R.string.pref_language_key),getString(R.string.pref_value_lang_en));
-            mMoviesRetro.retroMovies(getPageCount(),query, movieLang);
+            mMoviesRetro.retroMovies(getPageCount(),getQuery(), movieLang);
         }else{
             mMoviesRetro.retroMovies(savedInstanceState.getInt(RESTORE_PAGE),savedInstanceState.getString(MOVIE_QUERY), savedInstanceState.getString(LANG_MOVIE));
         }
@@ -83,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                         changePageCount(false);
                     }
 
-                    mMoviesRetro.retroMovies(getPageCount(), query, movieLang);
+                    mMoviesRetro.retroMovies(getPageCount(), getQuery(), movieLang);
                 }
             });
 
@@ -94,20 +92,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 changePageCount(true);
 
-                mMoviesRetro.retroMovies(getPageCount(),query,movieLang);
+                mMoviesRetro.retroMovies(getPageCount(),getQuery(),movieLang);
             }
         });
     }
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
         mListState = mRecyclerView.getLayoutManager().onSaveInstanceState();
         savedInstanceState.putParcelable(LIST_STATE_KEY,mListState);
         savedInstanceState.putInt(RESTORE_PAGE,getPageCount());
-        savedInstanceState.putString(MOVIE_QUERY,query);
+        savedInstanceState.putString(MOVIE_QUERY,getQuery());
         savedInstanceState.putString(LANG_MOVIE, movieLang);
-        super.onSaveInstanceState(savedInstanceState);
-
     }
 
     @Override
@@ -123,14 +120,14 @@ public class MainActivity extends AppCompatActivity {
 
             if (!savedQuery.equals(prefQuery) | !savedLang.equals(prefLang) ) {
 
-                query = prefQuery;
+                setQuery(prefQuery);
                 movieLang = prefLang;
                 setPageCount(1);
-                mMoviesRetro.retroMovies(getPageCount(), query, movieLang);
+                mMoviesRetro.retroMovies(getPageCount(), getQuery(), movieLang);
 
             } else {
 
-                query = savedQuery;
+                setQuery(savedQuery);
                 movieLang = savedLang;
                 mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
                 setPageCount(savedInstanceState.getInt(RESTORE_PAGE));
@@ -145,13 +142,13 @@ public class MainActivity extends AppCompatActivity {
         String prefQuery = sharedPrefs.getString(getString(R.string.pref_order_key), getString(R.string.pref_value_popular));
         String prefLang = sharedPrefs.getString(getString(R.string.pref_language_key),getString(R.string.pref_value_lang_en));
 
-        if(!prefQuery.equals(query) | !prefLang.equals(movieLang)) {
-            query = prefQuery;
+        if(!prefQuery.equals(getQuery()) | !prefLang.equals(movieLang)) {
+            setQuery(prefQuery);
             movieLang = prefLang;
             setPageCount(1);
-            mMoviesRetro.retroMovies(getPageCount(), query, movieLang);
+            mMoviesRetro.retroMovies(getPageCount(), getQuery(), movieLang);
             String msgToast = getResources().getString(R.string.query_movies_toast);
-            Toast toast = Toast.makeText(this, msgToast + " " + query, Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, msgToast + " " + getQuery(), Toast.LENGTH_SHORT);
             toast.show();
         }
 
@@ -183,30 +180,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(id == R.id.fav_movies_show){
-
-            b_back.setVisibility(View.GONE);
-            b_next.setVisibility(View.GONE);
-            mMoviesDAO = new MoviesDAO(this);
-            List<Movie> fav = mMoviesDAO.select_all();
-            mAdapter.setmMovieList(fav);
+            Intent intent = new Intent(this, FavoriteActivity.class);
+            startActivity(intent);
         }
 
         if(id == R.id.pop_movies_show){
-
-            b_back.setVisibility(View.VISIBLE);
-            b_next.setVisibility(View.VISIBLE);
-            query = "popular";
-            setPageCount(1);
-            mMoviesRetro.retroMovies(getPageCount(), query, movieLang);
+            top_show("popular");
         }
 
         if(id == R.id.top_movies_show){
-
-            b_back.setVisibility(View.VISIBLE);
-            b_next.setVisibility(View.VISIBLE);
-            query = "top";
-            setPageCount(1);
-            mMoviesRetro.retroMovies(getPageCount(), query, movieLang);
+            top_show("top");
         }
 
         return super.onOptionsItemSelected(item);
@@ -242,14 +225,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void setQuery(String query){
+        this.query = query;
+    }
+
+    public String getQuery(){
+        return query;
+    }
+
     public static String getApiKey(){
         return API_KEY;
     }
 
+    public void top_show(String query){
+        b_back.setVisibility(View.VISIBLE);
+        b_next.setVisibility(View.VISIBLE);
+        setQuery(query);
+        setPageCount(1);
+        mMoviesRetro.retroMovies(getPageCount(), query, movieLang);
+    }
+
     @Override
     protected void onDestroy(){
-
-        try {
+        try{
             mMoviesDAO.close();
         }catch (Exception e){
             e.printStackTrace();

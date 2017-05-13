@@ -77,9 +77,7 @@ public class DetailActivity extends AppCompatActivity {
 
         mMoviesDAO = new MoviesDAO(DetailActivity.this);
 
-        int movie_count = mMoviesDAO.select_check(mId);
-
-        if(movie_count > 0){
+        if(mMoviesDAO.select_check(mId) > 0){
             mfavCheck.setChecked(true);
         }
 
@@ -117,6 +115,15 @@ public class DetailActivity extends AppCompatActivity {
                 .into(mBackPoster);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
     @Override
     protected void onDestroy(){
