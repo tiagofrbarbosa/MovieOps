@@ -20,7 +20,7 @@ import tech.infofun.popularmovies.R;
 import tech.infofun.popularmovies.adapter.MoviesAdapter;
 import tech.infofun.popularmovies.service.MoviesRetrofit;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends DebugActivity {
 
     private MoviesDAO mMoviesDAO;
     private RecyclerView mRecyclerView;
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState){
+    public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
         mListState = mRecyclerView.getLayoutManager().onSaveInstanceState();
         savedInstanceState.putParcelable(LIST_STATE_KEY,mListState);
@@ -184,14 +184,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        if(id == R.id.pop_movies_show){
-            top_show("popular");
-        }
-
-        if(id == R.id.top_movies_show){
-            top_show("top");
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -235,14 +227,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static String getApiKey(){
         return API_KEY;
-    }
-
-    public void top_show(String query){
-        b_back.setVisibility(View.VISIBLE);
-        b_next.setVisibility(View.VISIBLE);
-        setQuery(query);
-        setPageCount(1);
-        mMoviesRetro.retroMovies(getPageCount(), query, movieLang);
     }
 
     @Override

@@ -10,26 +10,14 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/pop_movies_show"
-        android:orderInCategory="2"
-        android:title="@string/popmovies"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/top_movies_show"
-        android:orderInCategory="3"
-        android:title="@string/top"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_settings"
-        android:orderInCategory="4"
+        android:orderInCategory="2"
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/about"
-        android:orderInCategory="5"
+        android:orderInCategory="3"
         android:title="@string/about"
         app:showAsAction="never" />
 
