@@ -35,14 +35,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db){
 
-        db.execSQL("CREATE TABLE movies(_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                   "movie_id INTEGER," +
-                    "title TEXT," +
-                    "poster TEXT," +
-                    "description TEXT," +
-                    "vote_average TEXT," +
-                    "release_date TEXT," +
-                    "backdrop TEXT);");
+        db.execSQL("CREATE TABLE " + MoviesTable.TABLE +
+                "(" + MoviesTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        MoviesTable.MOVIE_ID + " INTEGER," +
+                        MoviesTable.TITLE + " TEXT," +
+                        MoviesTable.POSTER + " TEXT," +
+                        MoviesTable.DESCRIPTION + " TEXT," +
+                        MoviesTable.VOTE_AVERAGE + " TEXT," +
+                        MoviesTable.RELEASE_DATE + " TEXT," +
+                        MoviesTable.BACKDROP + " TEXT);");
     }
 
     @Override

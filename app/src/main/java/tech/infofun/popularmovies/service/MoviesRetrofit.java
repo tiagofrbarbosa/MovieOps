@@ -8,6 +8,8 @@ import retrofit.client.Response;
 import tech.infofun.popularmovies.activity.DetailActivity;
 import tech.infofun.popularmovies.activity.MainActivity;
 import tech.infofun.popularmovies.adapter.TrailersAdapter;
+import tech.infofun.popularmovies.fragment.ActivityFragment;
+import tech.infofun.popularmovies.fragment.DetailFragment;
 import tech.infofun.popularmovies.model.Movie;
 import tech.infofun.popularmovies.model.Review;
 import tech.infofun.popularmovies.model.Trailer;
@@ -24,7 +26,7 @@ public class MoviesRetrofit {
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key",String.valueOf(MainActivity.getApiKey()));
+                        request.addEncodedQueryParam("api_key",String.valueOf(ActivityFragment.getApiKey()));
                         request.addEncodedQueryParam("page",String.valueOf(nPages));
                         request.addEncodedQueryParam("language",String.valueOf(movieLang));
                     }
@@ -38,7 +40,7 @@ public class MoviesRetrofit {
             service.getPopularMOvies(new Callback<Movie.MovieResult>() {
                 @Override
                 public void success(Movie.MovieResult movieResult, Response response) {
-                    MainActivity.mAdapter.setmMovieList(movieResult.getResults());
+                    ActivityFragment.mAdapter.setmMovieList(movieResult.getResults());
                 }
 
                 @Override
@@ -50,7 +52,7 @@ public class MoviesRetrofit {
             service.getTopMovies(new Callback<Movie.MovieResult>() {
                 @Override
                 public void success(Movie.MovieResult movieResult, Response response) {
-                    MainActivity.mAdapter.setmMovieList(movieResult.getResults());
+                    ActivityFragment.mAdapter.setmMovieList(movieResult.getResults());
                 }
 
                 @Override
@@ -68,7 +70,7 @@ public class MoviesRetrofit {
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key",String.valueOf(MainActivity.getApiKey()));
+                        request.addEncodedQueryParam("api_key",String.valueOf(ActivityFragment.getApiKey()));
                     }
                 })
                 .setLogLevel(RestAdapter.LogLevel.FULL)
@@ -77,7 +79,7 @@ public class MoviesRetrofit {
         service.getTrailers(new Callback<Trailer.TrailerResult>() {
             @Override
             public void success(Trailer.TrailerResult trailerResult, Response response) {
-                DetailActivity.mAdapter.setmMovieList(trailerResult.getResults());
+                DetailFragment.mAdapter.setmMovieList(trailerResult.getResults());
             }
 
             @Override
@@ -93,7 +95,7 @@ public class MoviesRetrofit {
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key",String.valueOf(MainActivity.getApiKey()));
+                        request.addEncodedQueryParam("api_key",String.valueOf(ActivityFragment.getApiKey()));
                     }
                 })
                 .setLogLevel(RestAdapter.LogLevel.FULL)
@@ -102,7 +104,7 @@ public class MoviesRetrofit {
         service.getReviews(new Callback<Review.ReviewResult>() {
             @Override
             public void success(Review.ReviewResult reviewResult, Response response) {
-                DetailActivity.reviewsAdapter.setmMovieList(reviewResult.getResults());
+                DetailFragment.reviewsAdapter.setmMovieList(reviewResult.getResults());
             }
 
             @Override

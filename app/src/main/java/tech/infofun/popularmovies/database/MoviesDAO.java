@@ -33,7 +33,7 @@ public class MoviesDAO {
     }
 
     public long insert(Movie movie){
-   ;
+
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.MoviesTable.MOVIE_ID, movie.getId());
         values.put(DatabaseHelper.MoviesTable.TITLE, movie.getTitle());
