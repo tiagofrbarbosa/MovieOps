@@ -129,7 +129,12 @@ public class DetailFragment extends Fragment{
 
     @Override
     public void onDestroy(){
-        mMoviesDAO.close();
+        try {
+            mMoviesDAO.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         super.onDestroy();
     }
 }
