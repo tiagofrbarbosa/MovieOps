@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-   <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="horizontal">
 
     <android.support.design.widget.AppBarLayout
@@ -30,19 +30,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1">
-    <LinearLayout
-        android:id="@+id/Fragment_activity_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"/></ScrollView>
+            <LinearLayout
+                android:id="@+id/Fragment_activity_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/></ScrollView>
 
-    <fragment
-        android:id="@+id/frag2"
-        android:name="tech.infofun.popularmovies.fragment.DetailFragment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"/>
+        <fragment
+            android:id="@+id/frag2"
+            android:name="tech.infofun.popularmovies.fragment.DetailFragment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"/>
     </LinearLayout>
 
 </RelativeLayout>
