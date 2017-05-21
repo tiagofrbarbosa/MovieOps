@@ -40,6 +40,7 @@ public class ActivityFragment extends Fragment{
     private MoviesRetrofit mMoviesRetro;
     private FloatingActionButton b_back, b_next;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
 
@@ -136,6 +137,8 @@ public class ActivityFragment extends Fragment{
                 mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
             }
         }
+
+
     }
 
     @Override
@@ -198,6 +201,7 @@ public class ActivityFragment extends Fragment{
     public static String getApiKey(){
         return API_KEY;
     }
+
 
     @Override
     public void onDestroy(){

@@ -24,10 +24,6 @@ import tech.infofun.popularmovies.model.Movie;
  */
 public class FavoriteActivity extends AppCompatActivity {
 
-    private MoviesDAO mMoviesDAO;
-    private RecyclerView mRecyclerView;
-    public static MoviesAdapter mAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);

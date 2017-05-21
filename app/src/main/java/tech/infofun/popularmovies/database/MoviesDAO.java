@@ -11,6 +11,7 @@ import java.util.List;
 
 import tech.infofun.popularmovies.activity.FavoriteActivity;
 import tech.infofun.popularmovies.activity.MainActivity;
+import tech.infofun.popularmovies.fragment.FavoriteFragment;
 import tech.infofun.popularmovies.model.Movie;
 
 /**
@@ -51,8 +52,7 @@ public class MoviesDAO {
         String where = DatabaseHelper.MoviesTable.MOVIE_ID + " = ?";
         String[] args = new String[]{p_args};
         getDb().delete(DatabaseHelper.MoviesTable.TABLE, where, args);
-        List<Movie> fav = select_all();
-        FavoriteActivity.mAdapter.setmMovieList(fav);
+        FavoriteFragment.mAdapter.setmMovieList(select_all());
     }
 
     public int select_check(int id){
