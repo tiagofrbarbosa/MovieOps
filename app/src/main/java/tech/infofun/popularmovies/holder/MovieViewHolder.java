@@ -39,7 +39,6 @@ public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public void onClick(View view){
 
         if (MainActivity.getDual()){
-            Toast.makeText(context, "Normal", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(context,DetailActivity.class);
             intent.putExtra("title", movieHolder.getTitle());
@@ -52,7 +51,6 @@ public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnC
             context.startActivity(intent);
 
         }else {
-            Toast.makeText(context, "Land", Toast.LENGTH_SHORT).show();
 
             DetailFragment d = MainActivity.getDetailFragment();
             d.setFragmentData(movieHolder);
