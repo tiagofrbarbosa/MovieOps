@@ -44,18 +44,18 @@ Replace API_KEY with your key
 
 ## References
 
-Links:
+### Links:
 
 RecyclerView, Holder, Adapter
-http://mateoj.com/2015/10/06/creating-movies-app-retrofit-picasso-android/
-http://mateoj.com/2015/10/07/creating-movies-app-retrofit-picass-android-part2/
+- http://mateoj.com/2015/10/06/creating-movies-app-retrofit-picasso-android/
+- http://mateoj.com/2015/10/07/creating-movies-app-retrofit-picass-android-part2/
 
-Books:
+### Books:
 
 Fragments, DebugActivity
-Google Android - Aprenda a criar aplicações para dispositivos móveis com o Android SDK
-5ª Edição, Autor: Ricardo R. Lecheta, ISBN: 978-85-7522-468-7
+- Google Android - Aprenda a criar aplicações para dispositivos móveis com o Android SDK
+- 5ª Edição, Autor: Ricardo R. Lecheta, ISBN: 978-85-7522-468-7
 
 SQLite, DAO, Databasehelper
-Google Android - crie aplicações para celulares e tablets
-1º Edição, Autor: João Bosco Monteiro, ISBN: 978-85-66250-02-2
+- Google Android - crie aplicações para celulares e tablets
+- 1º Edição, Autor: João Bosco Monteiro, ISBN: 978-85-66250-02-2
