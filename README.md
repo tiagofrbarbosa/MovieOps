@@ -46,7 +46,7 @@ Replace API_KEY with your key
 
 ### Links:
 
-RecyclerView, Holder, Adapter
+RecyclerView, Picasso and Retrofit
 - http://mateoj.com/2015/10/06/creating-movies-app-retrofit-picasso-android/
 - http://mateoj.com/2015/10/07/creating-movies-app-retrofit-picass-android-part2/
 
