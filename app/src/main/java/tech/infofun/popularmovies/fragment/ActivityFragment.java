@@ -202,6 +202,10 @@ public class ActivityFragment extends Fragment{
         return API_KEY;
     }
 
+    public void refreshMenuMovies(String q){
+        setPageCount(1);
+        mMoviesRetro.retroMovies(getPageCount(), q, movieLang);
+    }
 
     @Override
     public void onDestroy(){

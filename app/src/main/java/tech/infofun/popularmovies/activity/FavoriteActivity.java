@@ -56,7 +56,21 @@ public class FavoriteActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if(id == R.id.pop_movies_show){
+            ActivityFragment a = MainActivity.getActivityFragment();
+            a.refreshMenuMovies("popular");
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+
+        if(id == R.id.top_movies_show){
+            ActivityFragment a = MainActivity.getActivityFragment();
+            a.refreshMenuMovies("top");
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+
+        if(id == R.id.action_settings) {
             Intent intent = new Intent(this,SettingsActivity.class);
             startActivity(intent);
         }

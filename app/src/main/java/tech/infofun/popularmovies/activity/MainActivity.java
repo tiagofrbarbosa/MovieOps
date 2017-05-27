@@ -30,7 +30,7 @@ public class MainActivity extends DebugActivity {
 
     private static boolean dual;
     private static DetailFragment f;
-
+    private static ActivityFragment a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,22 +44,25 @@ public class MainActivity extends DebugActivity {
 
         ScrollView s = (ScrollView) findViewById(R.id.scroll2);
 
+        dual = s != null;
 
-        dual = s == null;
-
-        if(!dual){
+        if(dual){
             f = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.frag2);
         }
 
         if(savedInstanceState == null){
-            ActivityFragment f = new ActivityFragment();
+            ActivityFragment fa = new ActivityFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.Fragment_activity_main,f,"ActivityFragment");
+            ft.add(R.id.Fragment_activity_main,fa,"ActivityFragment");
             ft.commit();
         }
-
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        a = (ActivityFragment) getSupportFragmentManager().findFragmentByTag("ActivityFragment");
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,7 +79,15 @@ public class MainActivity extends DebugActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if(id == R.id.pop_movies_show){
+            a.refreshMenuMovies("popular");
+        }
+
+        if(id == R.id.top_movies_show){
+            a.refreshMenuMovies("top");
+        }
+
+        if(id == R.id.action_settings) {
             Intent intent = new Intent(this,SettingsActivity.class);
             startActivity(intent);
         }
@@ -100,5 +111,9 @@ public class MainActivity extends DebugActivity {
 
     public static DetailFragment getDetailFragment(){
         return f;
+    }
+
+    public static ActivityFragment getActivityFragment(){
+        return a;
     }
 }
