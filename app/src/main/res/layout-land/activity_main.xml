@@ -26,16 +26,13 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <ScrollView
-            android:layout_width="@dimen/zero_width"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+
                 <LinearLayout
                     android:id="@+id/Fragment_activity_main"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"/>
-        </ScrollView>
+                    android:layout_width="@dimen/zero_width"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"/>
 
         <ScrollView
             android:id="@+id/scroll2"
