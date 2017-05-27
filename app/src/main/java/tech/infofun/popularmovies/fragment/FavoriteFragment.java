@@ -8,9 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.List;
-
 import tech.infofun.popularmovies.R;
 import tech.infofun.popularmovies.adapter.MoviesAdapter;
 import tech.infofun.popularmovies.database.MoviesDAO;

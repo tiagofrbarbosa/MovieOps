@@ -1,30 +1,15 @@
 package tech.infofun.popularmovies.activity;
 
-
-import android.app.Activity;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ScrollView;
-import android.widget.Toast;
-import tech.infofun.popularmovies.database.MoviesDAO;
 import tech.infofun.popularmovies.R;
-import tech.infofun.popularmovies.adapter.MoviesAdapter;
 import tech.infofun.popularmovies.fragment.ActivityFragment;
 import tech.infofun.popularmovies.fragment.DetailFragment;
-import tech.infofun.popularmovies.service.MoviesRetrofit;
-import android.support.v4.app.Fragment;
 
 public class MainActivity extends DebugActivity {
 

@@ -4,20 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.List;
-
 import tech.infofun.popularmovies.R;
-import tech.infofun.popularmovies.adapter.MoviesAdapter;
-import tech.infofun.popularmovies.database.MoviesDAO;
 import tech.infofun.popularmovies.fragment.ActivityFragment;
 import tech.infofun.popularmovies.fragment.FavoriteFragment;
-import tech.infofun.popularmovies.model.Movie;
 
 /**
  * Created by tfbarbosa on 13/05/17.

@@ -9,12 +9,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import tech.infofun.popularmovies.R;
 import tech.infofun.popularmovies.adapter.MoviesAdapter;
 import tech.infofun.popularmovies.database.MoviesDAO;
@@ -62,7 +60,7 @@ public class ActivityFragment extends Fragment{
 
         if(savedInstanceState == null) {
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            setQuery(sharedPrefs.getString(getString(R.string.pref_order_key),getString(R.string.pref_value_popular)));
+            setQuery(getResources().getString(R.string.pref_value_popular));
             movieLang = sharedPrefs.getString(getString(R.string.pref_language_key),getString(R.string.pref_value_lang_en));
             mMoviesRetro.retroMovies(getPageCount(),getQuery(), movieLang);
         }else{
@@ -113,7 +111,6 @@ public class ActivityFragment extends Fragment{
 
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String prefQuery = sharedPrefs.getString(getString(R.string.pref_order_key),getString(R.string.pref_value_popular));
         String prefLang = sharedPrefs.getString(getString(R.string.pref_language_key),getString(R.string.pref_value_lang_en));
 
         if(savedInstanceState != null) {
@@ -121,9 +118,8 @@ public class ActivityFragment extends Fragment{
             String savedLang = savedInstanceState.getString(LANG_MOVIE);
 
 
-            if (!savedQuery.equals(prefQuery) | !savedLang.equals(prefLang)) {
+            if (!savedLang.equals(prefLang)) {
 
-                setQuery(prefQuery);
                 movieLang = prefLang;
                 setPageCount(1);
                 mMoviesRetro.retroMovies(getPageCount(), getQuery(), movieLang);
@@ -145,11 +141,9 @@ public class ActivityFragment extends Fragment{
     public void onResume(){
         super.onResume();
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String prefQuery = sharedPrefs.getString(getString(R.string.pref_order_key), getString(R.string.pref_value_popular));
         String prefLang = sharedPrefs.getString(getString(R.string.pref_language_key),getString(R.string.pref_value_lang_en));
 
-        if(!prefQuery.equals(getQuery()) | !prefLang.equals(movieLang)) {
-            setQuery(prefQuery);
+        if(!prefLang.equals(movieLang)) {
             movieLang = prefLang;
             setPageCount(1);
             mMoviesRetro.retroMovies(getPageCount(), getQuery(), movieLang);

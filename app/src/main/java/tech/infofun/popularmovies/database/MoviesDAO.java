@@ -4,13 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.infofun.popularmovies.activity.FavoriteActivity;
-import tech.infofun.popularmovies.activity.MainActivity;
 import tech.infofun.popularmovies.fragment.FavoriteFragment;
 import tech.infofun.popularmovies.model.Movie;
 
