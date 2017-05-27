@@ -3,4 +3,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="zero_width">0dp</dimen>
+    <dimen name="movie_title">20sp</dimen>
+    <dimen name="vote_average">30sp</dimen>
+    <dimen name="view_review_width">300dp</dimen>
+    <dimen name="view_review_height">2dp</dimen>
+    <dimen name="view_review_margin">25dp</dimen>
+    <dimen name="text_author">16sp</dimen>
 </resources>

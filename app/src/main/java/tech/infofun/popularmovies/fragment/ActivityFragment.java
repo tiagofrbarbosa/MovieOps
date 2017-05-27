@@ -36,7 +36,7 @@ public class ActivityFragment extends Fragment{
     private static final String LIST_STATE_KEY = "ListRestore";
     private static final String MOVIE_QUERY = "MovieQuery";
     private static final String LANG_MOVIE = "movieLang";
-    private static final String API_KEY = "API_KEY_HERE";
+    private static final String API_KEY = "4ef00b7823d6ac0b6eb76eba2d0727fa";
     private MoviesRetrofit mMoviesRetro;
     private FloatingActionButton b_back, b_next;
 

@@ -8,11 +8,11 @@
 
             <View
                 android:layout_gravity="center"
-                android:layout_width="300dp"
-                android:layout_height="2dp"
+                android:layout_width="@dimen/view_review_width"
+                android:layout_height="@dimen/view_review_height"
                 android:background="@color/gray"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="25dp"/>
+                android:layout_marginTop="@dimen/view_review_margin"
+                android:layout_marginBottom="@dimen/view_review_margin"/>
 
             <TextView
                 android:id="@+id/text_review"
@@ -28,7 +28,7 @@
                 android:id="@+id/text_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15dp"
+                android:textSize="@dimen/text_author"
                 android:layout_gravity="left"
                 android:textStyle="bold"
                 android:textColor="@color/black"
