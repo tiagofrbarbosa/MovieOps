@@ -34,7 +34,6 @@ public class ActivityFragment extends Fragment{
     private static final String LIST_STATE_KEY = "ListRestore";
     private static final String MOVIE_QUERY = "MovieQuery";
     private static final String LANG_MOVIE = "movieLang";
-    private static final String API_KEY = "API_KEY_HERE";
     private MoviesRetrofit mMoviesRetro;
     private FloatingActionButton b_back, b_next;
 
@@ -55,7 +54,7 @@ public class ActivityFragment extends Fragment{
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
         mAdapter = new MoviesAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
-        mMoviesRetro = new MoviesRetrofit();
+        mMoviesRetro = new MoviesRetrofit(getActivity());
 
 
         if(savedInstanceState == null) {
@@ -65,6 +64,7 @@ public class ActivityFragment extends Fragment{
             mMoviesRetro.retroMovies(getPageCount(),getQuery(), movieLang);
         }else{
             mMoviesRetro.retroMovies(savedInstanceState.getInt(RESTORE_PAGE),savedInstanceState.getString(MOVIE_QUERY), savedInstanceState.getString(LANG_MOVIE));
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
         }
 
         b_back.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +110,7 @@ public class ActivityFragment extends Fragment{
         super.onActivityCreated(savedInstanceState);
 
 
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+       SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String prefLang = sharedPrefs.getString(getString(R.string.pref_language_key),getString(R.string.pref_value_lang_en));
 
         if(savedInstanceState != null) {
@@ -140,7 +140,7 @@ public class ActivityFragment extends Fragment{
     @Override
     public void onResume(){
         super.onResume();
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+       SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String prefLang = sharedPrefs.getString(getString(R.string.pref_language_key),getString(R.string.pref_value_lang_en));
 
         if(!prefLang.equals(movieLang)) {
@@ -190,10 +190,6 @@ public class ActivityFragment extends Fragment{
 
     public String getQuery(){
         return query;
-    }
-
-    public static String getApiKey(){
-        return API_KEY;
     }
 
     public void refreshMenuMovies(String q){

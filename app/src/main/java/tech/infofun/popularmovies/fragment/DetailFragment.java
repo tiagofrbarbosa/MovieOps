@@ -47,7 +47,7 @@ public class DetailFragment extends Fragment{
 
         getmRecyclerView_review = (RecyclerView) view.findViewById(R.id.review_recycler);
         getmRecyclerView_review.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mMoviesDetails = new MoviesRetrofit();
+        mMoviesDetails = new MoviesRetrofit(getActivity());
 
         mAdapter = new TrailersAdapter(getActivity());
         mRecyclerView_trailer.setAdapter(mAdapter);

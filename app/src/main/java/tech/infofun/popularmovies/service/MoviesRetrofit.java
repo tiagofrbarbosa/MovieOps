@@ -1,10 +1,13 @@
 package tech.infofun.popularmovies.service;
 
+import android.content.Context;
+
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import tech.infofun.popularmovies.R;
 import tech.infofun.popularmovies.fragment.ActivityFragment;
 import tech.infofun.popularmovies.fragment.DetailFragment;
 import tech.infofun.popularmovies.model.Movie;
@@ -16,6 +19,15 @@ import tech.infofun.popularmovies.model.Trailer;
  */
 public class MoviesRetrofit {
 
+    private Context mContext;
+
+    public MoviesRetrofit(Context c){
+        mContext = c;
+    }
+
+    public String getApiKey(){
+        return mContext.getResources().getString(R.string.API_KEY);
+    }
 
     public void retroMovies(final int nPages, String query, final String movieLang){
         RestAdapter restAdapter = new RestAdapter.Builder()
@@ -23,7 +35,7 @@ public class MoviesRetrofit {
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key",String.valueOf(ActivityFragment.getApiKey()));
+                        request.addEncodedQueryParam("api_key",String.valueOf(getApiKey()));
                         request.addEncodedQueryParam("page",String.valueOf(nPages));
                         request.addEncodedQueryParam("language",String.valueOf(movieLang));
                     }
@@ -67,7 +79,7 @@ public class MoviesRetrofit {
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key",String.valueOf(ActivityFragment.getApiKey()));
+                        request.addEncodedQueryParam("api_key",String.valueOf(getApiKey()));
                     }
                 })
                 .setLogLevel(RestAdapter.LogLevel.FULL)
@@ -92,7 +104,7 @@ public class MoviesRetrofit {
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key",String.valueOf(ActivityFragment.getApiKey()));
+                        request.addEncodedQueryParam("api_key",String.valueOf(getApiKey()));
                     }
                 })
                 .setLogLevel(RestAdapter.LogLevel.FULL)
