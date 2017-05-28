@@ -56,6 +56,13 @@
                         android:name="android.support.PARENT_ACTIVITY"
                         android:value=".activity.MainActivity" />
         </activity>
+
+        <provider
+            android:authorities="tech.infofun.popularmovies.provider"
+            android:name=".provider.MoviesProvider"
+            android:permission="tech.infofun.popularmovies.provider.permission.ALL">
+        </provider>
+
     </application>
 
 </manifest>
