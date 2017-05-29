@@ -32,7 +32,7 @@ public class DetailFragment extends Fragment{
     private RecyclerView getmRecyclerView_review;
     private MoviesRetrofit mMoviesDetails;
     private CheckBox mfavCheck;
-    private int mId;
+    private int mId, mIsFavorite;
     private String mTitle,mPoster,mDescription,mVote,mRelease,mBack;
     private TextView mMovieTitle, mMovieDescription,mVoteAverage,mReleaseDate;
     private ImageView mBackPoster;
@@ -91,8 +91,10 @@ public class DetailFragment extends Fragment{
 
                     if (mfavCheck.isChecked()) {
 
+                        mIsFavorite = 1;
+
                         Movie movie = new Movie(mId, mTitle, mPoster, mDescription,
-                                mVote, mRelease, mBack);
+                                mVote, mRelease, mBack, mIsFavorite);
 
                         long insert_result = mMoviesDAO.insert(movie);
 
@@ -164,8 +166,10 @@ public class DetailFragment extends Fragment{
 
                 if (mfavCheck.isChecked()) {
 
+                    mIsFavorite = 1;
+
                     Movie movie_fav_land = new Movie(mId, mTitle, mPoster, mDescription,
-                            mVote, mRelease, mBack);
+                            mVote, mRelease, mBack,mIsFavorite);
 
                     long insert_result = mMoviesDAO.insert(movie_fav_land);
 

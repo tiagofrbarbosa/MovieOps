@@ -33,6 +33,8 @@ public class Movie {
 
     private int id;
 
+    private int is_favorite;
+
     public Movie(){}
 
     public Movie(int id, String title){
@@ -41,7 +43,7 @@ public class Movie {
     }
 
     public Movie(int id, String title, String poster, String description,
-                 String vote_average, String release_date, String backdrop){
+                 String vote_average, String release_date, String backdrop, int is_favorite){
 
         this.id = id;
         this.title = title;
@@ -50,6 +52,7 @@ public class Movie {
         this.vote_average = vote_average;
         this.release_date = release_date;
         this.backdrop = backdrop;
+        this.is_favorite = is_favorite;
     }
 
     public String getTitle(){
@@ -102,6 +105,14 @@ public class Movie {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIs_favorite(){
+        return is_favorite;
+    }
+
+    public void setIs_favorite(int f){
+        this.is_favorite = f;
     }
 
     public void setBackdrop(String backdrop) {

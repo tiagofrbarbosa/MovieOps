@@ -58,7 +58,7 @@
         </activity>
 
         <provider
-            android:authorities="tech.infofun.popularmovies.provider"
+            android:authorities="@string/provider"
             android:name=".provider.MoviesProvider"
             android:permission="tech.infofun.popularmovies.provider.permission.ALL">
         </provider>

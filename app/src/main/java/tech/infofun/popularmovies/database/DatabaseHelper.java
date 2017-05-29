@@ -22,6 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         public static final String VOTE_AVERAGE = "vote_average";
         public static final String RELEASE_DATE = "release_date";
         public static final String BACKDROP = "backdrop";
+        public static final String IS_FAVORITE = "is_favorite";
 
         public static final String[] COLUMNS = new String[]{
                 _ID, MOVIE_ID, TITLE, POSTER, DESCRIPTION, VOTE_AVERAGE, RELEASE_DATE, BACKDROP
@@ -43,7 +44,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         MoviesTable.DESCRIPTION + " TEXT," +
                         MoviesTable.VOTE_AVERAGE + " TEXT," +
                         MoviesTable.RELEASE_DATE + " TEXT," +
-                        MoviesTable.BACKDROP + " TEXT);");
+                        MoviesTable.BACKDROP + " TEXT" +
+                        MoviesTable.IS_FAVORITE + " INTEGER);");
     }
 
     @Override
