@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import tech.infofun.popularmovies.database.DatabaseHelper;
 import tech.infofun.popularmovies.model.*;
@@ -27,7 +28,7 @@ public class MoviesProvider extends ContentProvider{
 
     static{
         uriMatcher.addURI(AUTHORITY, MOVIE_PATH, MOVIES);
-        uriMatcher.addURI(AUTHORITY, MOVIE_PATH, MOVIE_ID);
+        uriMatcher.addURI(AUTHORITY, MOVIE_PATH + "/#", MOVIE_ID);
     }
 
     @Override

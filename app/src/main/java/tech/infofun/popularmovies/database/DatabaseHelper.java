@@ -44,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         MoviesTable.DESCRIPTION + " TEXT," +
                         MoviesTable.VOTE_AVERAGE + " TEXT," +
                         MoviesTable.RELEASE_DATE + " TEXT," +
-                        MoviesTable.BACKDROP + " TEXT" +
+                        MoviesTable.BACKDROP + " TEXT," +
                         MoviesTable.IS_FAVORITE + " INTEGER);");
     }
 

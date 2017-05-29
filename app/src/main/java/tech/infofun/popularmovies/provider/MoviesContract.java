@@ -9,7 +9,7 @@ public final class MoviesContract {
 
     public static final String AUTHORITY = "tech.infofun.popularmovies.provider";
     public static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
-    public static final String MOVIE_PATH = "movie";
+    public static final String MOVIE_PATH = "movies";
 
     public static final class Movie{
 
@@ -28,5 +28,6 @@ public final class MoviesContract {
         public static final String VOTE_AVERAGE = "vote_average";
         public static final String RELEASE_DATE = "release_date";
         public static final String BACKDROP = "backdrop";
+        public static final String IS_FAVORITE = "is_favorite";
     }
 }

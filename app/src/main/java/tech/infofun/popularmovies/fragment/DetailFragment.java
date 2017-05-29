@@ -1,5 +1,7 @@
 package tech.infofun.popularmovies.fragment;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,8 @@ import tech.infofun.popularmovies.adapter.ReviewsAdapter;
 import tech.infofun.popularmovies.adapter.TrailersAdapter;
 import tech.infofun.popularmovies.database.MoviesDAO;
 import tech.infofun.popularmovies.model.Movie;
+import tech.infofun.popularmovies.provider.MoviesContract;
+import tech.infofun.popularmovies.provider.MoviesProvider;
 import tech.infofun.popularmovies.service.MoviesRetrofit;
 
 /**
@@ -91,7 +95,22 @@ public class DetailFragment extends Fragment{
 
                     if (mfavCheck.isChecked()) {
 
-                        mIsFavorite = 1;
+                        ContentResolver resolver = getActivity().getContentResolver();
+
+                        ContentValues values = new ContentValues();
+
+                        values.put("movie_id",mId);
+                        values.put("title",mTitle);
+                        values.put("poster",mPoster);
+                        values.put("description",mDescription);
+                        values.put("vote_average",mVote);
+                        values.put("release_date",mRelease);
+                        values.put("backdrop",mBack);
+                        values.put("is_favorite",mIsFavorite);
+
+                        resolver.insert(MoviesContract.Movie.CONTENT_URI,values);
+
+                        /*mIsFavorite = 1;
 
                         Movie movie = new Movie(mId, mTitle, mPoster, mDescription,
                                 mVote, mRelease, mBack, mIsFavorite);
@@ -102,7 +121,7 @@ public class DetailFragment extends Fragment{
                             Toast.makeText(getActivity(), getString(R.string.success), Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(getActivity(), getString(R.string.error), Toast.LENGTH_LONG).show();
-                        }
+                        }*/
                     } else {
                         mMoviesDAO.delete(mId);
                         Toast.makeText(getActivity(), getString(R.string.removed), Toast.LENGTH_LONG).show();
