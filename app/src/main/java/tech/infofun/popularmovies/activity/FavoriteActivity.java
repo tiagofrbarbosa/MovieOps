@@ -14,7 +14,7 @@ import tech.infofun.popularmovies.fragment.FavoriteFragment;
 /**
  * Created by tfbarbosa on 13/05/17.
  */
-public class FavoriteActivity extends AppCompatActivity {
+public class FavoriteActivity extends DebugActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){

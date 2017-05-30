@@ -2,11 +2,14 @@ package tech.infofun.popularmovies.fragment;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +21,6 @@ import com.squareup.picasso.Picasso;
 import tech.infofun.popularmovies.R;
 import tech.infofun.popularmovies.adapter.ReviewsAdapter;
 import tech.infofun.popularmovies.adapter.TrailersAdapter;
-import tech.infofun.popularmovies.database.MoviesDAO;
 import tech.infofun.popularmovies.model.Movie;
 import tech.infofun.popularmovies.provider.MoviesContract;
 import tech.infofun.popularmovies.provider.MoviesProvider;
@@ -29,7 +31,6 @@ import tech.infofun.popularmovies.service.MoviesRetrofit;
  */
 public class DetailFragment extends Fragment{
 
-    private MoviesDAO mMoviesDAO;
     public static TrailersAdapter mAdapter;
     public static ReviewsAdapter reviewsAdapter;
     private RecyclerView mRecyclerView_trailer;
@@ -40,6 +41,9 @@ public class DetailFragment extends Fragment{
     private String mTitle,mPoster,mDescription,mVote,mRelease,mBack;
     private TextView mMovieTitle, mMovieDescription,mVoteAverage,mReleaseDate;
     private ImageView mBackPoster;
+    private ContentResolver resolver;
+    private ContentValues values;
+    private Uri uri;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
@@ -69,6 +73,11 @@ public class DetailFragment extends Fragment{
         mfavCheck.setVisibility(View.GONE);
 
 
+        resolver = getActivity().getContentResolver();
+        values = new ContentValues();
+        uri = MoviesContract.Movie.CONTENT_URI;
+
+
         if(getArguments() != null) {
 
             mId = getArguments().getInt("id");
@@ -78,14 +87,39 @@ public class DetailFragment extends Fragment{
             mRelease = getArguments().getString("release_date");
             mBack = getArguments().getString("backdrop");
             mPoster = getArguments().getString("poster");
+
             mfavCheck.setVisibility(View.VISIBLE);
+
+            values.put(MoviesContract.Movie.MOVIE_ID, mId);
+            values.put(MoviesContract.Movie.TITLE, mTitle);
+            values.put(MoviesContract.Movie.POSTER, mPoster);
+            values.put(MoviesContract.Movie.DESCRIPTION, mDescription);
+            values.put(MoviesContract.Movie.VOTE_AVERAGE, mVote);
+            values.put(MoviesContract.Movie.RELEASE_DATE, mRelease);
+            values.put(MoviesContract.Movie.BACKDROP, mBack);
 
             mMoviesDetails.retroTrailers(mId);
             mMoviesDetails.retroReviews(mId);
 
-            mMoviesDAO = new MoviesDAO(getActivity());
+            String[] projection = new String[]{MoviesContract.Movie.MOVIE_ID};
+            final String selection = MoviesContract.Movie.MOVIE_ID + " = ?";
+            final String[] selectionArgs = new String[]{String.valueOf(mId)};
+            String sortOrder = null;
 
-            if (mMoviesDAO.select_check(mId) > 0) {
+            Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, sortOrder);
+
+            cursor.moveToFirst();
+            int mCursorCount;
+
+            try {
+                mCursorCount =  cursor.getCount();
+            }catch (Exception e){
+                mCursorCount = 0;
+            }
+
+            Log.v("mCursorCount", String.valueOf(mCursorCount));
+
+            if (mCursorCount > 0) {
                 mfavCheck.setChecked(true);
             }
 
@@ -95,35 +129,17 @@ public class DetailFragment extends Fragment{
 
                     if (mfavCheck.isChecked()) {
 
-                        ContentResolver resolver = getActivity().getContentResolver();
+                        values.put(MoviesContract.Movie.IS_FAVORITE, 1);
 
-                        ContentValues values = new ContentValues();
+                        Uri insert_result = resolver.insert(uri,values);
 
-                        values.put("movie_id",mId);
-                        values.put("title",mTitle);
-                        values.put("poster",mPoster);
-                        values.put("description",mDescription);
-                        values.put("vote_average",mVote);
-                        values.put("release_date",mRelease);
-                        values.put("backdrop",mBack);
-                        values.put("is_favorite",mIsFavorite);
-
-                        resolver.insert(MoviesContract.Movie.CONTENT_URI,values);
-
-                        /*mIsFavorite = 1;
-
-                        Movie movie = new Movie(mId, mTitle, mPoster, mDescription,
-                                mVote, mRelease, mBack, mIsFavorite);
-
-                        long insert_result = mMoviesDAO.insert(movie);
-
-                        if (insert_result != -1) {
+                        if (insert_result != null) {
                             Toast.makeText(getActivity(), getString(R.string.success), Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(getActivity(), getString(R.string.error), Toast.LENGTH_LONG).show();
-                        }*/
+                        }
                     } else {
-                        mMoviesDAO.delete(mId);
+                        resolver.delete(uri,selection,selectionArgs);
                         Toast.makeText(getActivity(), getString(R.string.removed), Toast.LENGTH_LONG).show();
                     }
                 }
@@ -170,12 +186,36 @@ public class DetailFragment extends Fragment{
 
         mfavCheck.setChecked(false);
 
+        values.clear();
+        values.put(MoviesContract.Movie.MOVIE_ID, mId);
+        values.put(MoviesContract.Movie.TITLE, mTitle);
+        values.put(MoviesContract.Movie.POSTER, mPoster);
+        values.put(MoviesContract.Movie.DESCRIPTION, mDescription);
+        values.put(MoviesContract.Movie.VOTE_AVERAGE, mVote);
+        values.put(MoviesContract.Movie.RELEASE_DATE, mRelease);
+        values.put(MoviesContract.Movie.BACKDROP, mBack);
+
         mMoviesDetails.retroTrailers(mId);
         mMoviesDetails.retroReviews(mId);
 
-        mMoviesDAO = new MoviesDAO(getActivity());
+        String[] projection = new String[]{MoviesContract.Movie.MOVIE_ID};
+        final String selection = MoviesContract.Movie.MOVIE_ID + " = ?";
+        final String[] selectionArgs = new String[]{String.valueOf(mId)};
+        String sortOrder = null;
 
-        if (mMoviesDAO.select_check(mId) > 0) {
+        Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, sortOrder);
+
+        cursor.moveToFirst();
+        int mCursorCount;
+
+        try {
+            mCursorCount =  cursor.getCount();
+        }catch (Exception e){
+            mCursorCount = 0;
+        }
+
+
+        if (mCursorCount > 0) {
             mfavCheck.setChecked(true);
         }
 
@@ -185,20 +225,17 @@ public class DetailFragment extends Fragment{
 
                 if (mfavCheck.isChecked()) {
 
-                    mIsFavorite = 1;
+                    values.put(MoviesContract.Movie.IS_FAVORITE, 1);
 
-                    Movie movie_fav_land = new Movie(mId, mTitle, mPoster, mDescription,
-                            mVote, mRelease, mBack,mIsFavorite);
+                    Uri insert_result = resolver.insert(uri,values);
 
-                    long insert_result = mMoviesDAO.insert(movie_fav_land);
-
-                    if (insert_result != -1) {
+                    if (insert_result != null) {
                         Toast.makeText(getActivity(), getString(R.string.success), Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.error), Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    mMoviesDAO.delete(mId);
+                    resolver.delete(uri,selection,selectionArgs);
                     Toast.makeText(getActivity(), getString(R.string.removed), Toast.LENGTH_LONG).show();
                 }
             }
@@ -207,12 +244,6 @@ public class DetailFragment extends Fragment{
 
     @Override
     public void onDestroy(){
-        try {
-            mMoviesDAO.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
         super.onDestroy();
     }
 }

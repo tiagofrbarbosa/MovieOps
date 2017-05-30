@@ -100,6 +100,9 @@ public class MoviesProvider extends ContentProvider{
 
         switch(uriMatcher.match(uri)){
 
+            case MOVIES:
+                return database.delete(MOVIE_PATH, selection, selectionArgs);
+
             case MOVIE_ID:
                 selection = Movie._ID + " = ?";
                 selectionArgs = new String[]{uri.getLastPathSegment()};

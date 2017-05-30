@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import tech.infofun.popularmovies.R;
 import tech.infofun.popularmovies.adapter.MoviesAdapter;
-import tech.infofun.popularmovies.database.MoviesDAO;
 import tech.infofun.popularmovies.service.MoviesRetrofit;
 
 /**
@@ -23,7 +22,6 @@ import tech.infofun.popularmovies.service.MoviesRetrofit;
  */
 public class ActivityFragment extends Fragment{
 
-    private MoviesDAO mMoviesDAO;
     private RecyclerView mRecyclerView;
     public static MoviesAdapter mAdapter;
     private Parcelable mListState;
@@ -199,12 +197,6 @@ public class ActivityFragment extends Fragment{
 
     @Override
     public void onDestroy(){
-        try{
-            mMoviesDAO.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
         super.onDestroy();
     }
 }
