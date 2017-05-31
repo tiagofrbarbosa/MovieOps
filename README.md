@@ -36,9 +36,15 @@ You will incorporate libraries to simplify the amount of code you need to write
 
 ## THEMOVIESDB - API KEY
 
-Add the api key of the movies db at constant API_KEY, line 39 of ActivityFragment
+Add the api key of the movies db at values/strings_config.xml file
 
-In this line: private static final String API_KEY = "API_KEY_HERE";
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="API_KEY">API_KEY_HERE</string>
+    <string name="provider">tech.infofun.popularmovies.provider</string>
+</resources>
+```
 
 Replace API_KEY with your key
 
@@ -59,3 +65,27 @@ Fragments, DebugActivity
 SQLite, DAO, Databasehelper
 - Google Android - crie aplicações para celulares e tablets
 - 1º Edição, Autor: João Bosco Monteiro, ISBN: 978-85-66250-02-2
+
+## License
+
+          MIT License
+
+          Copyright (c) 2017 Tiago Freire Barbosa
+
+          Permission is hereby granted, free of charge, to any person obtaining a copy
+          of this software and associated documentation files (the "Software"), to deal
+          in the Software without restriction, including without limitation the rights
+          to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+          copies of the Software, and to permit persons to whom the Software is
+          furnished to do so, subject to the following conditions:
+
+          The above copyright notice and this permission notice shall be included in all
+          copies or substantial portions of the Software.
+
+          THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+          IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+          FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+          AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+          LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+          OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+          SOFTWARE.
