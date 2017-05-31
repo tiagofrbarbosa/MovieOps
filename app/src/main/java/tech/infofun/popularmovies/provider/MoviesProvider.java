@@ -9,10 +9,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import tech.infofun.popularmovies.database.DatabaseHelper;
-import tech.infofun.popularmovies.model.*;
 
 /**
  * Created by tfbarbosa on 28/05/17.

@@ -54,17 +54,6 @@ public class ActivityFragment extends Fragment{
         mRecyclerView.setAdapter(mAdapter);
         mMoviesRetro = new MoviesRetrofit(getActivity());
 
-
-        if(savedInstanceState == null) {
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            setQuery(getResources().getString(R.string.pref_value_popular));
-            movieLang = sharedPrefs.getString(getString(R.string.pref_language_key),getString(R.string.pref_value_lang_en));
-            mMoviesRetro.retroMovies(getPageCount(),getQuery(), movieLang);
-        }else{
-            mMoviesRetro.retroMovies(savedInstanceState.getInt(RESTORE_PAGE),savedInstanceState.getString(MOVIE_QUERY), savedInstanceState.getString(LANG_MOVIE));
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
-        }
-
         b_back.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -104,17 +93,22 @@ public class ActivityFragment extends Fragment{
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState){
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-       SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String prefLang = sharedPrefs.getString(getString(R.string.pref_language_key),getString(R.string.pref_value_lang_en));
+        if (savedInstanceState == null) {
 
-        if(savedInstanceState != null) {
+            setQuery(getResources().getString(R.string.pref_value_popular));
+            movieLang = sharedPrefs.getString(getString(R.string.pref_language_key), getString(R.string.pref_value_lang_en));
+            mMoviesRetro.retroMovies(getPageCount(), getQuery(), movieLang);
+
+        } else {
+
             String savedQuery = savedInstanceState.getString(MOVIE_QUERY);
             String savedLang = savedInstanceState.getString(LANG_MOVIE);
-
+            String prefLang = sharedPrefs.getString(getString(R.string.pref_language_key), getString(R.string.pref_value_lang_en));
 
             if (!savedLang.equals(prefLang)) {
 
@@ -129,27 +123,9 @@ public class ActivityFragment extends Fragment{
                 mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
                 setPageCount(savedInstanceState.getInt(RESTORE_PAGE));
                 mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
+                mMoviesRetro.retroMovies(getPageCount(), getQuery(), movieLang);
             }
         }
-
-
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-       SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String prefLang = sharedPrefs.getString(getString(R.string.pref_language_key),getString(R.string.pref_value_lang_en));
-
-        if(!prefLang.equals(movieLang)) {
-            movieLang = prefLang;
-            setPageCount(1);
-            mMoviesRetro.retroMovies(getPageCount(), getQuery(), movieLang);
-            String msgToast = getResources().getString(R.string.query_movies_toast);
-            Toast toast = Toast.makeText(getActivity(), msgToast + " " + getQuery(), Toast.LENGTH_SHORT);
-            toast.show();
-        }
-
     }
 
     public int getPageCount(){

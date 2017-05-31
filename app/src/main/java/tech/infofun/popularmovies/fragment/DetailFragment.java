@@ -2,14 +2,12 @@ package tech.infofun.popularmovies.fragment;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +19,9 @@ import com.squareup.picasso.Picasso;
 import tech.infofun.popularmovies.R;
 import tech.infofun.popularmovies.adapter.ReviewsAdapter;
 import tech.infofun.popularmovies.adapter.TrailersAdapter;
+import tech.infofun.popularmovies.database.DatabaseMovies;
 import tech.infofun.popularmovies.model.Movie;
 import tech.infofun.popularmovies.provider.MoviesContract;
-import tech.infofun.popularmovies.provider.MoviesProvider;
 import tech.infofun.popularmovies.service.MoviesRetrofit;
 
 /**
@@ -43,6 +41,7 @@ public class DetailFragment extends Fragment{
     private ImageView mBackPoster;
     private ContentResolver resolver;
     private ContentValues values;
+    private DatabaseMovies dbMovies;
     private Uri uri;
 
     @Override
@@ -75,7 +74,8 @@ public class DetailFragment extends Fragment{
 
         resolver = getActivity().getContentResolver();
         values = new ContentValues();
-        uri = MoviesContract.Movie.CONTENT_URI;
+        dbMovies = new DatabaseMovies(resolver);
+
 
 
         if(getArguments() != null) {
@@ -101,23 +101,7 @@ public class DetailFragment extends Fragment{
             mMoviesDetails.retroTrailers(mId);
             mMoviesDetails.retroReviews(mId);
 
-            String[] projection = new String[]{MoviesContract.Movie.MOVIE_ID};
-            final String selection = MoviesContract.Movie.MOVIE_ID + " = ?";
-            final String[] selectionArgs = new String[]{String.valueOf(mId)};
-            String sortOrder = null;
-
-            Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, sortOrder);
-
-            cursor.moveToFirst();
-            int mCursorCount;
-
-            try {
-                mCursorCount =  cursor.getCount();
-            }catch (Exception e){
-                mCursorCount = 0;
-            }
-
-            Log.v("mCursorCount", String.valueOf(mCursorCount));
+            int mCursorCount = dbMovies.getFavoriteMovieForCheck(mId);
 
             if (mCursorCount > 0) {
                 mfavCheck.setChecked(true);
@@ -131,7 +115,7 @@ public class DetailFragment extends Fragment{
 
                         values.put(MoviesContract.Movie.IS_FAVORITE, 1);
 
-                        Uri insert_result = resolver.insert(uri,values);
+                        Uri insert_result = dbMovies.setFavoriteMovies(values);
 
                         if (insert_result != null) {
                             Toast.makeText(getActivity(), getString(R.string.success), Toast.LENGTH_LONG).show();
@@ -139,7 +123,7 @@ public class DetailFragment extends Fragment{
                             Toast.makeText(getActivity(), getString(R.string.error), Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        resolver.delete(uri,selection,selectionArgs);
+                        dbMovies.deleteMovies(mId);
                         Toast.makeText(getActivity(), getString(R.string.removed), Toast.LENGTH_LONG).show();
                     }
                 }
@@ -198,22 +182,7 @@ public class DetailFragment extends Fragment{
         mMoviesDetails.retroTrailers(mId);
         mMoviesDetails.retroReviews(mId);
 
-        String[] projection = new String[]{MoviesContract.Movie.MOVIE_ID};
-        final String selection = MoviesContract.Movie.MOVIE_ID + " = ?";
-        final String[] selectionArgs = new String[]{String.valueOf(mId)};
-        String sortOrder = null;
-
-        Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, sortOrder);
-
-        cursor.moveToFirst();
-        int mCursorCount;
-
-        try {
-            mCursorCount =  cursor.getCount();
-        }catch (Exception e){
-            mCursorCount = 0;
-        }
-
+        int mCursorCount = dbMovies.getFavoriteMovieForCheck(mId);
 
         if (mCursorCount > 0) {
             mfavCheck.setChecked(true);
@@ -227,7 +196,7 @@ public class DetailFragment extends Fragment{
 
                     values.put(MoviesContract.Movie.IS_FAVORITE, 1);
 
-                    Uri insert_result = resolver.insert(uri,values);
+                    Uri insert_result = dbMovies.setFavoriteMovies(values);
 
                     if (insert_result != null) {
                         Toast.makeText(getActivity(), getString(R.string.success), Toast.LENGTH_LONG).show();
@@ -235,7 +204,7 @@ public class DetailFragment extends Fragment{
                         Toast.makeText(getActivity(), getString(R.string.error), Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    resolver.delete(uri,selection,selectionArgs);
+                    dbMovies.deleteMovies(mId);
                     Toast.makeText(getActivity(), getString(R.string.removed), Toast.LENGTH_LONG).show();
                 }
             }

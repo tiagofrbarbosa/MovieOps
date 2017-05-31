@@ -16,6 +16,7 @@ public class MainActivity extends DebugActivity {
     private static boolean dual;
     private static DetailFragment f;
     private static ActivityFragment a;
+    private String fTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class MainActivity extends DebugActivity {
         ScrollView s = (ScrollView) findViewById(R.id.scroll2);
 
         dual = s != null;
+        fTag = "ActivityFragment";
 
         if(dual){
             f = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.frag2);
@@ -38,7 +40,7 @@ public class MainActivity extends DebugActivity {
         if(savedInstanceState == null){
             ActivityFragment fa = new ActivityFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.Fragment_activity_main,fa,"ActivityFragment");
+            ft.add(R.id.Fragment_activity_main,fa,fTag);
             ft.commit();
         }
     }
@@ -47,16 +49,6 @@ public class MainActivity extends DebugActivity {
     public void onResume(){
         super.onResume();
         a = (ActivityFragment) getSupportFragmentManager().findFragmentByTag("ActivityFragment");
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState){
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState){
-        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
