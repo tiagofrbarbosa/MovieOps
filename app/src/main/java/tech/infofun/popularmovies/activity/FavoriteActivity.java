@@ -7,14 +7,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ScrollView;
+
 import tech.infofun.popularmovies.R;
 import tech.infofun.popularmovies.fragment.ActivityFragment;
+import tech.infofun.popularmovies.fragment.DetailFragment;
 import tech.infofun.popularmovies.fragment.FavoriteFragment;
 
 /**
  * Created by tfbarbosa on 13/05/17.
  */
 public class FavoriteActivity extends DebugActivity {
+
+    private static boolean dual;
+    private static DetailFragment f;
+    private static FavoriteFragment a;
+    private static final String fTag = "FavoriteFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -24,13 +32,27 @@ public class FavoriteActivity extends DebugActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ScrollView s = (ScrollView) findViewById(R.id.scroll2);
+
+        dual = s != null;
+
+        if(dual){
+            f = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.frag2);
+        }
+
         if(savedInstanceState == null){
             FavoriteFragment f = new FavoriteFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.Fragment_favorite_main,f,"FavoriteFragment");
+            ft.add(R.id.Fragment_favorite_main,f,fTag);
             ft.commit();
         }
 
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        a = (FavoriteFragment) getSupportFragmentManager().findFragmentByTag(fTag);
     }
 
     @Override
@@ -78,5 +100,17 @@ public class FavoriteActivity extends DebugActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static boolean getDual(){
+        return dual;
+    }
+
+    public static DetailFragment getDetailFragment(){
+        return f;
+    }
+
+    public static FavoriteFragment getActivityFragment(){
+        return a;
     }
 }

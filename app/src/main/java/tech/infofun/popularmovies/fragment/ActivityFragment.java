@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import tech.infofun.popularmovies.R;
 import tech.infofun.popularmovies.adapter.MoviesAdapter;
 import tech.infofun.popularmovies.service.MoviesRetrofit;
@@ -50,7 +49,11 @@ public class ActivityFragment extends Fragment{
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
-        mAdapter = new MoviesAdapter(getActivity());
+
+        if(mAdapter == null) {
+            mAdapter = new MoviesAdapter(getActivity());
+        }
+
         mRecyclerView.setAdapter(mAdapter);
         mMoviesRetro = new MoviesRetrofit(getActivity());
 
@@ -93,6 +96,22 @@ public class ActivityFragment extends Fragment{
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String prefLang = sharedPrefs.getString(getString(R.string.pref_language_key), getString(R.string.pref_value_lang_en));
+
+        if (!movieLang.equals(prefLang)) {
+
+            movieLang = prefLang;
+            setPageCount(1);
+            mMoviesRetro.retroMovies(getPageCount(), getQuery(), movieLang);
+
+        }
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -108,15 +127,6 @@ public class ActivityFragment extends Fragment{
 
             String savedQuery = savedInstanceState.getString(MOVIE_QUERY);
             String savedLang = savedInstanceState.getString(LANG_MOVIE);
-            String prefLang = sharedPrefs.getString(getString(R.string.pref_language_key), getString(R.string.pref_value_lang_en));
-
-            if (!savedLang.equals(prefLang)) {
-
-                movieLang = prefLang;
-                setPageCount(1);
-                mMoviesRetro.retroMovies(getPageCount(), getQuery(), movieLang);
-
-            } else {
 
                 setQuery(savedQuery);
                 movieLang = savedLang;
@@ -126,7 +136,6 @@ public class ActivityFragment extends Fragment{
                 mMoviesRetro.retroMovies(getPageCount(), getQuery(), movieLang);
             }
         }
-    }
 
     public int getPageCount(){
         return this.pageCount;
@@ -168,6 +177,7 @@ public class ActivityFragment extends Fragment{
 
     public void refreshMenuMovies(String q){
         setPageCount(1);
+        setQuery(q);
         mMoviesRetro.retroMovies(getPageCount(), q, movieLang);
     }
 

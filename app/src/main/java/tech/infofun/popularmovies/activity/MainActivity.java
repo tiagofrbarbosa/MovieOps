@@ -16,7 +16,7 @@ public class MainActivity extends DebugActivity {
     private static boolean dual;
     private static DetailFragment f;
     private static ActivityFragment a;
-    private String fTag;
+    private static final String fTag = "ActivityFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,6 @@ public class MainActivity extends DebugActivity {
         ScrollView s = (ScrollView) findViewById(R.id.scroll2);
 
         dual = s != null;
-        fTag = "ActivityFragment";
 
         if(dual){
             f = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.frag2);
@@ -48,7 +47,7 @@ public class MainActivity extends DebugActivity {
     @Override
     public void onResume(){
         super.onResume();
-        a = (ActivityFragment) getSupportFragmentManager().findFragmentByTag("ActivityFragment");
+        a = (ActivityFragment) getSupportFragmentManager().findFragmentByTag(fTag);
     }
 
     @Override

@@ -1,8 +1,6 @@
 package tech.infofun.popularmovies.fragment;
 
 import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,8 +25,6 @@ public class FavoriteFragment extends Fragment{
     private RecyclerView mRecyclerView;
     public static MoviesAdapter mAdapter;
     private ContentResolver resolver;
-    private ContentValues values;
-    private Uri uri;
     private DatabaseMovies dbMovies;
     private List<Movie> fav;
 
@@ -75,5 +71,12 @@ public class FavoriteFragment extends Fragment{
     @Override
     public void onDestroy(){
         super.onDestroy();
+    }
+
+    public void onRefresh(){
+        fav.clear();
+        fav = dbMovies.getFavoriteMovies();
+        mAdapter.setmMovieList(fav);
+        mRecyclerView.setAdapter(mAdapter);
     }
 }

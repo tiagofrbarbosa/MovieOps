@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import tech.infofun.popularmovies.activity.DetailActivity;
+import tech.infofun.popularmovies.activity.FavoriteActivity;
 import tech.infofun.popularmovies.activity.MainActivity;
 import tech.infofun.popularmovies.fragment.DetailFragment;
+import tech.infofun.popularmovies.fragment.FavoriteFragment;
 import tech.infofun.popularmovies.model.Movie;
 import tech.infofun.popularmovies.R;
 
@@ -33,23 +37,50 @@ public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnC
     @Override
     public void onClick(View view){
 
-        if (MainActivity.getDual()){
+        String s = context.getClass().getName();
+        s = s.substring(s.lastIndexOf("."));
+        Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
 
-            DetailFragment d = MainActivity.getDetailFragment();
-            d.setFragmentData(movieHolder);
+        if(s.equals(".MainActivity")){
+            if (MainActivity.getDual()){
 
-        }else {
+                DetailFragment d = MainActivity.getDetailFragment();
+                d.setFragmentData(movieHolder);
 
-            Intent intent = new Intent(context,DetailActivity.class);
-            intent.putExtra("title", movieHolder.getTitle());
-            intent.putExtra("description",movieHolder.getDescription());
-            intent.putExtra("vote_average",movieHolder.getVote_average());
-            intent.putExtra("release_date",movieHolder.getRelease_date());
-            intent.putExtra("backdrop",movieHolder.getBackdrop());
-            intent.putExtra("id",movieHolder.getId());
-            intent.putExtra("poster",movieHolder.getPoster());
-            context.startActivity(intent);
+            }else {
 
+                Intent intent = new Intent(context,DetailActivity.class);
+                intent.putExtra("title", movieHolder.getTitle());
+                intent.putExtra("description",movieHolder.getDescription());
+                intent.putExtra("vote_average",movieHolder.getVote_average());
+                intent.putExtra("release_date",movieHolder.getRelease_date());
+                intent.putExtra("backdrop",movieHolder.getBackdrop());
+                intent.putExtra("id",movieHolder.getId());
+                intent.putExtra("poster",movieHolder.getPoster());
+                context.startActivity(intent);
+
+            }
+        }
+
+        if(s.equals(".FavoriteActivity")){
+            if (FavoriteActivity.getDual()){
+
+                DetailFragment d = FavoriteActivity.getDetailFragment();
+                d.setFragmentData(movieHolder);
+
+            }else {
+
+                Intent intent = new Intent(context,DetailActivity.class);
+                intent.putExtra("title", movieHolder.getTitle());
+                intent.putExtra("description",movieHolder.getDescription());
+                intent.putExtra("vote_average",movieHolder.getVote_average());
+                intent.putExtra("release_date",movieHolder.getRelease_date());
+                intent.putExtra("backdrop",movieHolder.getBackdrop());
+                intent.putExtra("id",movieHolder.getId());
+                intent.putExtra("poster",movieHolder.getPoster());
+                context.startActivity(intent);
+
+            }
         }
     }
 }

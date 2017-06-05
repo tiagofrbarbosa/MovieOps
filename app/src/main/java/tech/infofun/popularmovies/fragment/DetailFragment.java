@@ -35,33 +35,40 @@ public class DetailFragment extends Fragment{
     private RecyclerView getmRecyclerView_review;
     private MoviesRetrofit mMoviesDetails;
     private CheckBox mfavCheck;
-    private int mId, mIsFavorite;
+    private int mId;
     private String mTitle,mPoster,mDescription,mVote,mRelease,mBack;
     private TextView mMovieTitle, mMovieDescription,mVoteAverage,mReleaseDate;
     private ImageView mBackPoster;
     private ContentResolver resolver;
     private ContentValues values;
     private DatabaseMovies dbMovies;
-    private Uri uri;
+    private static Movie mSavedMovies;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
 
-        View view = inflater.inflate(R.layout.movie_detail_fragment, container, false);
+        view = inflater.inflate(R.layout.movie_detail_fragment, container, false);
 
         mRecyclerView_trailer = (RecyclerView) view.findViewById(R.id.trailer_recycler);
         mRecyclerView_trailer.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         getmRecyclerView_review = (RecyclerView) view.findViewById(R.id.review_recycler);
         getmRecyclerView_review.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         mMoviesDetails = new MoviesRetrofit(getActivity());
 
-        mAdapter = new TrailersAdapter(getActivity());
+        if(mAdapter == null) {
+            mAdapter = new TrailersAdapter(getActivity());
+        }
+
         mRecyclerView_trailer.setAdapter(mAdapter);
 
-        reviewsAdapter = new ReviewsAdapter(getActivity());
-        getmRecyclerView_review.setAdapter(reviewsAdapter);
+        if(reviewsAdapter == null) {
+            reviewsAdapter = new ReviewsAdapter(getActivity());
+        }
 
+        getmRecyclerView_review.setAdapter(reviewsAdapter);
 
         mMovieTitle = (TextView) view.findViewById(R.id.movie_title);
         mMovieDescription = (TextView) view.findViewById(R.id.movie_description);
@@ -69,14 +76,10 @@ public class DetailFragment extends Fragment{
         mReleaseDate = (TextView) view.findViewById(R.id.release_date);
         mBackPoster = (ImageView) view.findViewById(R.id.back_detail);
         mfavCheck = (CheckBox) view.findViewById(R.id.fav_check);
-        mfavCheck.setVisibility(View.GONE);
-
 
         resolver = getActivity().getContentResolver();
         values = new ContentValues();
         dbMovies = new DatabaseMovies(resolver);
-
-
 
         if(getArguments() != null) {
 
@@ -87,8 +90,6 @@ public class DetailFragment extends Fragment{
             mRelease = getArguments().getString("release_date");
             mBack = getArguments().getString("backdrop");
             mPoster = getArguments().getString("poster");
-
-            mfavCheck.setVisibility(View.VISIBLE);
 
             values.put(MoviesContract.Movie.MOVIE_ID, mId);
             values.put(MoviesContract.Movie.TITLE, mTitle);
@@ -102,10 +103,7 @@ public class DetailFragment extends Fragment{
             mMoviesDetails.retroReviews(mId);
 
             int mCursorCount = dbMovies.getFavoriteMovieForCheck(mId);
-
-            if (mCursorCount > 0) {
-                mfavCheck.setChecked(true);
-            }
+            mSavedMovies = new Movie(mId,mTitle,mPoster,mDescription,mVote,mRelease,mBack,mCursorCount);
 
             mfavCheck.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -125,6 +123,7 @@ public class DetailFragment extends Fragment{
                     } else {
                         dbMovies.deleteMovies(mId);
                         Toast.makeText(getActivity(), getString(R.string.removed), Toast.LENGTH_LONG).show();
+
                     }
                 }
             });
@@ -138,37 +137,57 @@ public class DetailFragment extends Fragment{
             Picasso.with(getActivity())
                     .load(Movie.getTmdbBackDropPath() + mBack)
                     .into(mBackPoster);
+        }else {
+
+            if(mSavedMovies != null)
+            setFragmentData(mSavedMovies);
+
         }
 
         return view;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState){
-        super.onSaveInstanceState(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        if(mSavedMovies != null) {
+            mfavCheck = (CheckBox) view.findViewById(R.id.fav_check);
+
+            if (dbMovies.getFavoriteMovieForCheck(mSavedMovies.getId()) > 0) {
+                mfavCheck.setChecked(true);
+            } else {
+                mfavCheck.setChecked(false);
+            }
+        }
     }
 
     public void setFragmentData(Movie movie){
 
-        mId = movie.getId();
-        mTitle = movie.getTitle();
-        mDescription = movie.getDescription();
-        mVote = movie.getVote_average();
-        mRelease = movie.getRelease_date();
-        mBack = movie.getBackdrop();
-        mPoster = movie.getPoster();
+            mId = movie.getId();
+            mTitle = movie.getTitle();
+            mDescription = movie.getDescription();
+            mVote = movie.getVote_average();
+            mRelease = movie.getRelease_date();
+            mBack = movie.getBackdrop();
+            mPoster = movie.getPoster();
+
+        int mCursorCount = dbMovies.getFavoriteMovieForCheck(mId);
+        mSavedMovies = new Movie(mId,mTitle,mPoster,mDescription,mVote,mRelease,mBack,mCursorCount);
 
         mMovieTitle.setText(mTitle);
         mMovieDescription.setText(mDescription);
         mVoteAverage.setText(mVote);
         mReleaseDate.setText(mRelease);
-        mfavCheck.setVisibility(View.VISIBLE);
 
         Picasso.with(getActivity())
                 .load(Movie.getTmdbBackDropPath() + mBack)
                 .into(mBackPoster);
-
-        mfavCheck.setChecked(false);
 
         values.clear();
         values.put(MoviesContract.Movie.MOVIE_ID, mId);
@@ -179,13 +198,20 @@ public class DetailFragment extends Fragment{
         values.put(MoviesContract.Movie.RELEASE_DATE, mRelease);
         values.put(MoviesContract.Movie.BACKDROP, mBack);
 
+        mAdapter = new TrailersAdapter(getActivity());
+        reviewsAdapter = new ReviewsAdapter(getActivity());
+        mRecyclerView_trailer.setAdapter(mAdapter);
+        getmRecyclerView_review.setAdapter(reviewsAdapter);
+
         mMoviesDetails.retroTrailers(mId);
         mMoviesDetails.retroReviews(mId);
 
-        int mCursorCount = dbMovies.getFavoriteMovieForCheck(mId);
+        mfavCheck = (CheckBox) view.findViewById(R.id.fav_check);
 
-        if (mCursorCount > 0) {
+        if(mCursorCount > 0){
             mfavCheck.setChecked(true);
+        }else{
+            mfavCheck.setChecked(false);
         }
 
         mfavCheck.setOnClickListener(new View.OnClickListener() {
@@ -206,6 +232,10 @@ public class DetailFragment extends Fragment{
                 } else {
                     dbMovies.deleteMovies(mId);
                     Toast.makeText(getActivity(), getString(R.string.removed), Toast.LENGTH_LONG).show();
+
+                    String s = getActivity().getClass().getName();
+                    s = s.substring(s.lastIndexOf("."));
+
                 }
             }
         });
