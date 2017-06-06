@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
 import tech.infofun.popularmovies.R;
 import tech.infofun.popularmovies.adapter.ReviewsAdapter;
 import tech.infofun.popularmovies.adapter.TrailersAdapter;
@@ -226,6 +229,9 @@ public class DetailFragment extends Fragment{
 
                     if (insert_result != null) {
                         Toast.makeText(getActivity(), getString(R.string.success), Toast.LENGTH_LONG).show();
+
+                        refreshFavorite();
+
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.error), Toast.LENGTH_LONG).show();
                     }
@@ -233,12 +239,19 @@ public class DetailFragment extends Fragment{
                     dbMovies.deleteMovies(mId);
                     Toast.makeText(getActivity(), getString(R.string.removed), Toast.LENGTH_LONG).show();
 
-                    String s = getActivity().getClass().getName();
-                    s = s.substring(s.lastIndexOf("."));
-
+                        refreshFavorite();
                 }
             }
         });
+    }
+
+    public void refreshFavorite(){
+        if(FavoriteFragment.mAdapter != null) {
+            List<Movie> fav;
+            fav = dbMovies.getFavoriteMovies();
+            FavoriteFragment.mAdapter.setmMovieList(fav);
+            FavoriteFragment.mRecyclerView.setAdapter(FavoriteFragment.mAdapter);
+        }
     }
 
     @Override

@@ -39,7 +39,6 @@ public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
         String s = context.getClass().getName();
         s = s.substring(s.lastIndexOf("."));
-        Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
 
         if(s.equals(".MainActivity")){
             if (MainActivity.getDual()){

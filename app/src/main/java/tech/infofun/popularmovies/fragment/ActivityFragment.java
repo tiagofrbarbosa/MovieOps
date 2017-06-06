@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import tech.infofun.popularmovies.R;
+import tech.infofun.popularmovies.activity.MainActivity;
 import tech.infofun.popularmovies.adapter.MoviesAdapter;
 import tech.infofun.popularmovies.service.MoviesRetrofit;
 
@@ -48,7 +49,12 @@ public class ActivityFragment extends Fragment{
         }
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
+
+        if(MainActivity.getDual()) {
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        }else{
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        }
 
         if(mAdapter == null) {
             mAdapter = new MoviesAdapter(getActivity());

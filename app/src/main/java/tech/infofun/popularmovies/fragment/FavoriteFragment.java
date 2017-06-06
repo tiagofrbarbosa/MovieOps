@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 import tech.infofun.popularmovies.R;
+import tech.infofun.popularmovies.activity.FavoriteActivity;
 import tech.infofun.popularmovies.adapter.MoviesAdapter;
 import tech.infofun.popularmovies.database.DatabaseMovies;
 import tech.infofun.popularmovies.model.Movie;
@@ -22,7 +23,7 @@ import tech.infofun.popularmovies.model.Movie;
  */
 public class FavoriteFragment extends Fragment{
 
-    private RecyclerView mRecyclerView;
+    public static RecyclerView mRecyclerView;
     public static MoviesAdapter mAdapter;
     private ContentResolver resolver;
     private DatabaseMovies dbMovies;
@@ -33,7 +34,13 @@ public class FavoriteFragment extends Fragment{
         View view = inflater.inflate(R.layout.favorite_main_fragment, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
+
+        if(FavoriteActivity.getDual()) {
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        }else{
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        }
+
         mAdapter = new MoviesAdapter(getActivity());
 
         resolver = getActivity().getContentResolver();
