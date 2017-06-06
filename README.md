@@ -69,8 +69,7 @@ SQLite, ContentProvider, Databasehelper
 ## Gource
 
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/0fHuz_74fiY/0.jpg)]
-(https://www.youtube.com/watch?v=0fHuz_74fiY)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/0fHuz_74fiY/0.jpg)](https://www.youtube.com/watch?v=0fHuz_74fiY)
 
 ## License
 
