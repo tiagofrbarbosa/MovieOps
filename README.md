@@ -46,7 +46,7 @@ Add the api key of the movies db at values/strings_config.xml file
 </resources>
 ```
 
-Replace API_KEY with your key
+Replace API_KEY_HERE with your key
 
 ## References
 
@@ -62,9 +62,15 @@ Fragments, DebugActivity
 - Google Android - Aprenda a criar aplicações para dispositivos móveis com o Android SDK
 - 5ª Edição, Autor: Ricardo R. Lecheta, ISBN: 978-85-7522-468-7
 
-SQLite, DAO, Databasehelper
+SQLite, ContentProvider, Databasehelper
 - Google Android - crie aplicações para celulares e tablets
 - 1º Edição, Autor: João Bosco Monteiro, ISBN: 978-85-66250-02-2
+
+## Gource
+
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/0fHuz_74fiY/0.jpg)]
+(https://www.youtube.com/watch?v=0fHuz_74fiY)
 
 ## License
 
