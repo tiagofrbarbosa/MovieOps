@@ -4,6 +4,7 @@
 ![alt text](https://raw.githubusercontent.com/tiagofrbarbosa/MovieOps/master/screenshots/cap02.png)
 ![alt text](https://raw.githubusercontent.com/tiagofrbarbosa/MovieOps/master/screenshots/cap03.png)
 ![alt text](https://raw.githubusercontent.com/tiagofrbarbosa/MovieOps/master/screenshots/cap04.png)
+![alt text](https://raw.githubusercontent.com/tiagofrbarbosa/MovieOps/master/screenshots/cap05.png)
 
 ## Project overview
 
