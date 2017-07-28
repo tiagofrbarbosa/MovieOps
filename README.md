@@ -1,4 +1,4 @@
-# Udacity - Popular Movies - Stage 1
+# Udacity - Popular Movies - Stage 1 & 2
 
 ![alt text](https://raw.githubusercontent.com/tiagofrbarbosa/MovieOps/master/screenshots/cap01.png)
 ![alt text](https://raw.githubusercontent.com/tiagofrbarbosa/MovieOps/master/screenshots/cap02.png)
